@@ -14,6 +14,8 @@ const Sidebar: React.FC = () => {
       prev.includes(item) ? prev.filter((el) => el !== item) : [...prev, item]
     );
   };
+  console.log("Selected Brands:", selectedBrands);
+  console.log("Selected Features:", selectedFeatures);
 
   return (
     <aside style={styles.sidebar}>
@@ -142,21 +144,20 @@ const Sidebar: React.FC = () => {
 
 const styles = {
   sidebar: {
-    width: "40%",
     paddingLeft: "132px",
     overflowY: "auto" as const,
   },
   section: {
     marginBottom: "20px",
-    borderTop: "1px solid #DEE2E7",
   },
 
   sectionOff: {
-    borderTop: "1px solid #DEE2E7",
     cursor: "pointer",
   },
 
   box: {
+    width: "40%",
+    borderTop: "1px solid #DEE2E7",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",

@@ -1,6 +1,8 @@
 import React from "react";
 import Header from "./Components/Header";
 import Sidebar from "./Components/Sidebar";
+import ProductsCard from "./Components/ProductCard"; 
+import ProductsPage from "./Pages/ProductsPage";
 import HomePage from "./Pages/HomePage";
 import ProductDetailsPage from "./Pages/ProductDetailsPage";
 import BurgerIcon from "./assets/images/icons/burger.svg";
@@ -52,8 +54,12 @@ function App() {
       </div>
       <main style={styles.main}>
         <div style={styles.rightSide}>
-          {" "}
           <Sidebar />
+        </div>
+        <div style={styles.leftSide}>
+          <ProductsCard />
+          <ProductsCard />
+          <ProductsCard />
         </div>
       </main>
     </div>
@@ -108,5 +114,9 @@ const styles = {
 
   rightSide: {
     width: "40%",
+  },
+
+  leftSide: {
+    width: "60%",
   },
 };
