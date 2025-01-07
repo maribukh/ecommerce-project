@@ -112,11 +112,11 @@ const styles = {
     marginRight: "10px",
   },
 
-  rightSide: {
-    width: "40%",
-  },
+
 
   leftSide: {
-    width: "60%",
+    width: "100%",
+    paddingLeft: "10px",
+    paddingRight: "132px",
   },
 };

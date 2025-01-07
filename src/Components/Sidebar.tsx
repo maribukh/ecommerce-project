@@ -144,6 +144,7 @@ const Sidebar: React.FC = () => {
 
 const styles = {
   sidebar: {
+    width: "240px",
     paddingLeft: "132px",
     overflowY: "auto" as const,
   },
@@ -156,7 +157,6 @@ const styles = {
   },
 
   box: {
-    width: "40%",
     borderTop: "1px solid #DEE2E7",
     display: "flex",
     alignItems: "center",
