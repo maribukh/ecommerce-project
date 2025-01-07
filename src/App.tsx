@@ -1,17 +1,15 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ProductsPage from "./pages/ProductsPage";
-import ProductDetails from "./pages/ProductDetails";
+import Header from "./components/Header";
 
-const App: React.FC = () => {
+function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<ProductsPage />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-      </Routes>
-    </Router>
+    <div>
+      <Header />
+      <main>
+        <h2>Test</h2>
+      </main>
+    </div>
   );
-};
+}
 
 export default App;
