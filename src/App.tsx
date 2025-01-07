@@ -51,7 +51,10 @@ function App() {
         </nav>
       </div>
       <main style={styles.main}>
-        <Sidebar />
+        <div style={styles.rightSide}>
+          {" "}
+          <Sidebar />
+        </div>
       </main>
     </div>
   );
@@ -101,5 +104,9 @@ const styles = {
   },
   pSpacing: {
     marginRight: "10px",
+  },
+
+  rightSide: {
+    width: "40%",
   },
 };
