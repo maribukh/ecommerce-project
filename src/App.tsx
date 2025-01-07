@@ -1,5 +1,8 @@
 import React from "react";
-import Header from "./components/Header";
+import Header from "./Components/Header";
+import Sidebar from "./Components/Sidebar";
+import HomePage from "./Pages/HomePage";
+import ProductDetailsPage from "./Pages/ProductDetailsPage";
 import BurgerIcon from "./assets/images/icons/burger.svg";
 import DropdownIcon from "./assets/images/icons/dropDown.svg";
 import RightVector from "./assets/images/icons/rightVector.svg";
@@ -8,7 +11,7 @@ function App() {
   return (
     <div>
       <Header />
-      <main>
+      <div style={styles.content}>
         <div style={styles.categoriesContainer}>
           <ul style={styles.ul}>
             <li style={styles.li}>
@@ -37,15 +40,18 @@ function App() {
                 <img src={RightVector} alt="right" />
               </li>
               <li style={styles.li}>
-                <p style={styles.pSpacing}> Men's wear</p>
+                <p style={styles.pSpacing}>Men's wear</p>
                 <img src={RightVector} alt="right" />
               </li>
               <li style={styles.li}>
-                <p style={styles.pSpacing}> Summer clothing</p>
+                <p style={styles.pSpacing}>Summer clothing</p>
               </li>
             </ul>
           </div>
         </nav>
+      </div>
+      <main style={styles.main}>
+        <Sidebar />
       </main>
     </div>
   );
@@ -56,43 +62,43 @@ export default App;
 const styles = {
   body: {
     backgroundColor: "#DEE2E7",
+    fontFamily: "Arial, sans-serif",
   },
-
+  main: {
+    display: "flex",
+  },
+  content: {
+    flex: 1,
+  },
   categoriesContainer: {
     width: "100%",
     display: "flex",
-    alignItems: "centre",
+    alignItems: "center",
     padding: "8px 132px",
     border: "1px solid #E0E0E0",
     backgroundColor: "#FFFFFF",
   },
-
   ul: {
     width: "40%",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "centre",
+    alignItems: "center",
     padding: "0",
     listStyle: "none",
     margin: "0",
   },
-
   li: {
     display: "flex",
-    justifyContent: "space-between",
     alignItems: "center",
   },
-
   navContainer: {
     padding: "10px 132px",
     color: "#8B96A5",
     cursor: "pointer",
   },
-
   pSpacing0: {
     marginLeft: "10px",
   },
-
   pSpacing: {
     marginRight: "10px",
   },
