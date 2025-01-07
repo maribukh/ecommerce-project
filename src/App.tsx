@@ -58,8 +58,6 @@ function App() {
         </div>
         <div style={styles.leftSide}>
           <ProductsCard />
-          <ProductsCard />
-          <ProductsCard />
         </div>
       </main>
     </div>

@@ -1,38 +1,58 @@
 import React from "react";
+import btnIcons from "../assets/images/icons/btn-group.svg";
 
 const ProductsCard: React.FC = () => {
   return (
-    <div style={styles.card}>
-      <h2 style={styles.title}>Product Title</h2>
-      <p style={styles.description}>Short description of the product</p>
-      <p style={styles.price}>$99.99</p>
+    <div style={styles.contentTop}>
+      <ul style={styles.ul}>
+        <li style={styles.li}>
+          <p>
+            12,911 Items in <b>Mobile accessory</b>
+          </p>
+        </li>
+        <li style={styles.li}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <input type="checkbox" />
+            <p style={styles.pSpace}>Verified Only</p>
+          </div>
+        </li>
+        <li style={styles.li}>
+          <select name="filter" id="filter">
+            <option value="featured">Featured</option>
+          </select>
+        </li>
+        <li style={styles.li}>
+          <img src={btnIcons} alt="Button group icons" />
+        </li>
+      </ul>
     </div>
   );
 };
 
 const styles = {
-  card: {
-    border: "1px solid #E0E0E0",
-    borderRadius: "8px",
-    padding: "16px",
-    backgroundColor: "#FFFFFF",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    margin: "10px",
+  contentTop: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "10px 0",
+    borderBottom: "1px solid #E0E0E0",
   },
-  title: {
-    fontSize: "18px",
-    fontWeight: "bold",
-    margin: "0 0 8px 0",
+  ul: {
+    display: "flex",
+    alignItems: "center",
+    listStyle: "none",
+    padding: "0",
+    margin: "0",
+    gap: "16px",
   },
-  description: {
+  li: {
+    display: "flex",
+    alignItems: "center",
+  },
+  pSpace: {
+    marginLeft: "8px",
     fontSize: "14px",
     color: "#8B96A5",
-    margin: "0 0 12px 0",
-  },
-  price: {
-    fontSize: "16px",
-    fontWeight: "bold",
-    color: "#333",
   },
 };
 
