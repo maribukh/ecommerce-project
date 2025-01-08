@@ -71,22 +71,25 @@ const styles = {
     backgroundColor: "#DEE2E7",
     fontFamily: "Arial, sans-serif",
   },
+
   main: {
     display: "flex",
   },
+
   content: {
     flex: 1,
   },
+
   categoriesContainer: {
-    width: "100%",
     display: "flex",
     alignItems: "center",
     padding: "8px 132px",
     border: "1px solid #E0E0E0",
     backgroundColor: "#FFFFFF",
   },
+
   ul: {
-    width: "40%",
+    width: "55%",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
@@ -94,12 +97,14 @@ const styles = {
     listStyle: "none",
     margin: "0",
   },
+
   li: {
     display: "flex",
     alignItems: "center",
   },
+
   navContainer: {
-    padding: "10px 132px",
+    padding: "0px 132px",
     color: "#8B96A5",
     cursor: "pointer",
   },
