@@ -106,11 +106,13 @@ const ProductsCard = () => {
   return (
     <div style={styles.productCardContainer}>
       <div style={styles.contentTop}>
-        <ul style={styles.ulFilter }>
+        <ul style={styles.ulFilter}>
           <li style={styles.li}>
-            <p>
-              {filteredProducts.length} Items in <b>Beauty</b>
-            </p>
+            <div style={styles.leftTop}>
+              <p>
+                {filteredProducts.length} Items in <b>Beauty</b>
+              </p>
+            </div>
           </li>
           <div style={styles.rightTop}>
             <li style={styles.li}>
@@ -220,7 +222,7 @@ const ProductsCard = () => {
 
       <div style={styles.pagination}>
         <ul style={styles.ulPage}>
-          <li style={styles.liPage}>
+          <li style={styles.li}>
             <select
               style={styles.page}
               value={sortOption}
@@ -258,7 +260,7 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "4px 20px",
+    padding: "4px 0px",
     borderRadius: "6px",
     backgroundColor: "#FFFFFF",
     border: "1px solid #E0E0E0",
@@ -266,7 +268,11 @@ const styles = {
   rightTop: {
     display: "flex",
     justifyContent: "space-between",
+    marginRight: "20px",
     gap: "16px",
+  },
+  leftTop: {
+    marginLeft: "20px",
   },
   cardsContainer: {
     display: "grid",

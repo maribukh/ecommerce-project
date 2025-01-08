@@ -75,7 +75,7 @@ const styles = {
     width: "57%",
     display: "flex",
     alignItems: "center",
-    border: "3px solid #0D6EFD",
+    border: "2px solid #0D6EFD",
     borderRadius: "4px",
   },
   input: {
@@ -90,9 +90,9 @@ const styles = {
     padding: "11px 10px",
     borderRadius: "0",
     outline: "none",
+    border: "none",
     backgroundColor: "#fff",
     cursor: "pointer",
-    border: "1px solid #0D6EFD",
   },
   button: {
     width: "23%",
@@ -102,6 +102,7 @@ const styles = {
     border: "none",
     cursor: "pointer",
     fontSize: "1rem",
+    border: "1px solid #0D6EFD",
   },
   actions: {
     display: "flex",
