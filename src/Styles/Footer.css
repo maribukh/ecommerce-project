@@ -1,44 +1,89 @@
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
 .footer {
+  margin-top: 167px;
   background-color: #f8f8f8;
-  padding: 20px;
   font-family: Arial, sans-serif;
 }
 
 .footer-newsletter {
   text-align: center;
-  border: 1px solid #d8d8d8;
-  padding: 15px;
-  margin-bottom: 20px;
+  border: 1px solid #EFF2F4;
+  padding: 40px 0px;
+  background-color: #EFF2F4;
+}
+
+.footer-newsletter h3 {
+    font-size: 1.25rem;
+    margin: 0;
+    padding: 0;
+}
+.footer-newsletter p {
+    font-size: 1rem;
+    color: #606060;
+    margin: 0;
 }
 
 .newsletter-form {
-  margin-top: 10px;
+    width: 100%;
+  margin-top: 16px;
 }
 
 .newsletter-form input {
+  width: 20%;
   padding: 8px;
   border: 1px solid #d8d8d8;
   border-radius: 4px;
-  margin-right: 10px;
+  margin-right: 6px;
 }
 
 .newsletter-form button {
-  background-color: #007bff;
+  background: linear-gradient(180deg, #127FFF 0%, #0067FF 100%);
   color: #fff;
   padding: 8px 15px;
   border: none;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .footer-main {
+  padding: 50px 132px;
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
 
+.footer-main .footer-brand  p {
+  font-size: 1.1rem;
+  margin: 15px 0px;
+  color: #505050;
+}
+
+.footer-main .footer-brand .social-icons img {
+  margin-right: 10px;
+}
+
 .footer-links {
   display: flex;
-  gap: 20px;
+  gap: 64px;
+
+}
+
+.footer-links h4 {
+  margin: 0;
+}
+.footer-app {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-app h4 {
+    margin: 0;
+    margin-bottom: 8px;
 }
 
 .footer-links ul {
@@ -48,21 +93,30 @@
 
 .footer-links li {
   margin-bottom: 8px;
+  color: #8B96A5;
 }
 
-.footer-brand,
-.footer-app {
-  width: 20%;
+
+.footer-brand {
+  width: 26%;
 }
 
 .footer-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #d8d8d8;
-  padding-top: 10px;
+  background-color: #EFF2F4;
+  border-top: 1px solid #DEE2E7;
+  padding: 10px 132px;
+  color: #606060;
 }
 
 .footer-language {
+  display: flex;
+  align-items: center;
   font-size: 14px;
+}
+
+.footer-language img {
+  margin-right: 6px;
 }

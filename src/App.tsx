@@ -3,12 +3,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
 import Sidebar from "./Components/Sidebar";
 import ProductsCard from "./Components/ProductCard";
-import Footer from "./Components/Footer"; 
+import Footer from "./Components/Footer";
+import BurgerIcon from "./assets/images/icons/burger.svg";
+import DropdownIcon from "./assets/images/icons/dropDown.svg";
+import RightVector from "./assets/images/icons/rightVector.svg";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [cartItems, setCartItems] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("All Category");
   const [activeFilters, setActiveFilters] = useState([]);
   const [availableFilters, setAvailableFilters] = useState([]);
 
@@ -32,9 +34,49 @@ function App() {
     <Router>
       <div>
         <Header onSearch={handleSearch} cartCount={cartItems.length} />
-        <div style={styles.content}>
-          {/* ... categories container and navigation */}
+
+        {/* Контейнер категорий */}
+        <div style={styles.categoriesContainer}>
+          <ul style={styles.ul}>
+            <li style={styles.li}>
+              <img src={BurgerIcon} alt="icon" />
+              <p style={styles.pSpacing0}>All Category</p>
+            </li>
+            <li style={styles.li}>Hot offers</li>
+            <li style={styles.li}>Gift boxes</li>
+            <li style={styles.li}>Projects</li>
+            <li style={styles.li}>Menu Items</li>
+            <li style={styles.li}>
+              Help
+              <img src={DropdownIcon} alt="DropDown" />
+            </li>
+          </ul>
         </div>
+
+        {/* Навигация */}
+        <nav>
+          <div style={styles.navContainer}>
+            <ul style={styles.ul}>
+              <li style={styles.li}>
+                <p style={styles.pSpacing}>Home</p>
+                <img src={RightVector} alt="right" />
+              </li>
+              <li style={styles.li}>
+                <p style={styles.pSpacing}>Clothings</p>
+                <img src={RightVector} alt="right" />
+              </li>
+              <li style={styles.li}>
+                <p style={styles.pSpacing}>Men's wear</p>
+                <img src={RightVector} alt="right" />
+              </li>
+              <li style={styles.li}>
+                <p style={styles.pSpacing}>Summer clothing</p>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        {/* Основной контент */}
         <main style={styles.main}>
           <div style={styles.rightSide}>
             <Sidebar
@@ -57,11 +99,12 @@ function App() {
                   />
                 }
               />
-              {/* ... other routes */}
+              {/* ... другие маршруты */}
             </Routes>
           </div>
         </main>
-        <Footer /> {/* Добавляем футер */}
+
+        <Footer />
       </div>
     </Router>
   );
