@@ -1,11 +1,20 @@
-import React from "react";
-import headerLogo from "../assets/images/logo/Layout/Brand//logo-colored.svg";
-import ProfileIcon from "../assets/images/icons/profile.svg"; 
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import headerLogo from "../assets/images/logo/Layout/Brand/logo-colored.svg";
+import ProfileIcon from "../assets/images/icons/profile.svg";
 import MessageIcon from "../assets/images/icons/message.svg";
 import OrderIcon from "../assets/images/icons/fav.svg";
 import CartIcon from "../assets/images/icons/cart.svg";
 
-const Header: React.FC = () => {
+const Header = ({ onSearch, cartCount }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    onSearch(searchQuery);
+  };
+
   return (
     <header style={styles.header}>
       <div>
@@ -15,30 +24,38 @@ const Header: React.FC = () => {
           style={{ width: "150px", height: "auto" }}
         />
       </div>
-      <div style={styles.search}>
-        <input type="text" placeholder="Search" style={styles.input} />
+      <form onSubmit={handleSearchSubmit} style={styles.search}>
+        <input
+          type="text"
+          placeholder="Search"
+          style={styles.input}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
         <select style={styles.select} name="all categories">
           <option value="">All Categories</option>
         </select>
-        <button style={styles.button}>Search</button>
-      </div>
+        <button type="submit" style={styles.button}>
+          Search
+        </button>
+      </form>
       <div style={styles.actions}>
         <ul style={styles.ul}>
-          <li style={styles.li}>
+          <li style={styles.li} onClick={() => navigate("/profile")}>
             <img src={ProfileIcon} alt="Profile" style={styles.icon} />
             <p style={styles.p}>Profile</p>
           </li>
-          <li style={styles.li}>
+          <li style={styles.li} onClick={() => navigate("/messages")}>
             <img src={MessageIcon} alt="Message" style={styles.icon} />
             <p style={styles.p}>Message</p>
           </li>
-          <li style={styles.li}>
+          <li style={styles.li} onClick={() => navigate("/orders")}>
             <img src={OrderIcon} alt="Order" style={styles.icon} />
             <p style={styles.p}>Order</p>
           </li>
-          <li style={styles.li}>
+          <li style={styles.li} onClick={() => navigate("/cart")}>
             <img src={CartIcon} alt="Cart" style={styles.icon} />
-            <p style={styles.p}>My Cart</p>
+            <p style={styles.p}>My Cart {cartCount > 0 && `(${cartCount})`}</p>
           </li>
         </ul>
       </div>
@@ -105,6 +122,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    cursor: "pointer",
   },
   icon: {
     width: "20px",

@@ -1,87 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
 import Sidebar from "./Components/Sidebar";
-import ProductsCard from "./Components/ProductCard"; 
-import ProductsPage from "./Pages/ProductsPage";
-import HomePage from "./Pages/HomePage";
-import ProductDetailsPage from "./Pages/ProductDetailsPage";
-import BurgerIcon from "./assets/images/icons/burger.svg";
-import DropdownIcon from "./assets/images/icons/dropDown.svg";
-import RightVector from "./assets/images/icons/rightVector.svg";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
+import ProductsCard from "./Components/ProductCard";
+import Footer from "./Components/Footer"; 
 
 function App() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All Category");
+  const [activeFilters, setActiveFilters] = useState([]);
+  const [availableFilters, setAvailableFilters] = useState([]);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const handleAddToCart = (item) => {
+    setCartItems((prev) => [...prev, item]);
+  };
+
+  const handleFilterChange = (filters) => {
+    setActiveFilters(filters);
+  };
+
+  const handleAvailableFiltersUpdate = (filters) => {
+    setAvailableFilters(filters);
+  };
+
   return (
-    <div>
-      <Header />
-      <div style={styles.content}>
-        <div style={styles.categoriesContainer}>
-          <ul style={styles.ul}>
-            <li style={styles.li}>
-              <img src={BurgerIcon} alt="icon" />
-              <p style={styles.pSpacing0}>All Category</p>
-            </li>
-            <li style={styles.li}>Hot offers</li>
-            <li style={styles.li}>Gift boxes</li>
-            <li style={styles.li}>Projects</li>
-            <li style={styles.li}>Menu Items</li>
-            <li style={styles.li}>
-              Help
-              <img src={DropdownIcon} alt="DropDown" />
-            </li>
-          </ul>
+    <Router>
+      <div>
+        <Header onSearch={handleSearch} cartCount={cartItems.length} />
+        <div style={styles.content}>
+          {/* ... categories container and navigation */}
         </div>
-        <nav>
-          <div style={styles.navContainer}>
-            <ul style={styles.ul}>
-              <li style={styles.li}>
-                <p style={styles.pSpacing}>Home</p>
-                <img src={RightVector} alt="right" />
-              </li>
-              <li style={styles.li}>
-                <p style={styles.pSpacing}>Clothings</p>
-                <img src={RightVector} alt="right" />
-              </li>
-              <li style={styles.li}>
-                <p style={styles.pSpacing}>Men's wear</p>
-                <img src={RightVector} alt="right" />
-              </li>
-              <li style={styles.li}>
-                <p style={styles.pSpacing}>Summer clothing</p>
-              </li>
-            </ul>
+        <main style={styles.main}>
+          <div style={styles.rightSide}>
+            <Sidebar
+              activeFilters={activeFilters}
+              onFilterChange={handleFilterChange}
+              onAvailableFiltersUpdate={handleAvailableFiltersUpdate}
+            />
           </div>
-        </nav>
+          <div style={styles.leftSide}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <ProductsCard
+                    searchQuery={searchQuery}
+                    onAddToCart={handleAddToCart}
+                    activeFilters={activeFilters}
+                    availableFilters={availableFilters}
+                    onFilterChange={handleFilterChange}
+                  />
+                }
+              />
+              {/* ... other routes */}
+            </Routes>
+          </div>
+        </main>
+        <Footer /> {/* Добавляем футер */}
       </div>
-      <main style={styles.main}>
-        <div style={styles.rightSide}>
-          <Sidebar />
-        </div>
-        <div style={styles.leftSide}>
-          <ProductsCard />
-        </div>
-      </main>
-    </div>
+    </Router>
   );
 }
-
-export default App;
 
 const styles = {
   body: {
     backgroundColor: "#DEE2E7",
     fontFamily: "Arial, sans-serif",
   },
-
   main: {
     display: "flex",
   },
-
   content: {
     flex: 1,
   },
-
   categoriesContainer: {
     display: "flex",
     alignItems: "center",
@@ -89,7 +85,6 @@ const styles = {
     border: "1px solid #E0E0E0",
     backgroundColor: "#FFFFFF",
   },
-
   ul: {
     width: "55%",
     display: "flex",
@@ -99,12 +94,10 @@ const styles = {
     listStyle: "none",
     margin: "0",
   },
-
   li: {
     display: "flex",
     alignItems: "center",
   },
-
   navContainer: {
     padding: "0px 132px",
     color: "#8B96A5",
@@ -116,12 +109,11 @@ const styles = {
   pSpacing: {
     marginRight: "10px",
   },
-
-
-
   leftSide: {
     width: "100%",
     paddingLeft: "10px",
     paddingRight: "132px",
   },
 };
+
+export default App;

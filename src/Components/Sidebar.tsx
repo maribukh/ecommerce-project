@@ -1,37 +1,36 @@
 import React, { useState, useEffect } from "react";
 import DropUp from "../assets/images/icons//DropUp.svg";
 
-const Sidebar: React.FC = () => {
-  const [categories, setCategories] = useState<string[]>([]);
-  const [brands, setBrands] = useState<string[]>([]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+const Sidebar = ({
+  activeFilters,
+  onFilterChange,
+  onAvailableFiltersUpdate,
+}) => {
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
 
-  // Fetch data from the server
   useEffect(() => {
     fetch("https://dummyjson.com/products")
       .then((response) => response.json())
       .then((data) => {
-
         const uniqueCategories = Array.from(
-          new Set(data.products.map((product: any) => product.category))
+          new Set(data.products.map((product) => product.category))
         );
         const uniqueBrands = Array.from(
-          new Set(data.products.map((product: any) => product.brand))
+          new Set(data.products.map((product) => product.brand))
         );
         setCategories(uniqueCategories);
         setBrands(uniqueBrands);
+        onAvailableFiltersUpdate([...uniqueBrands, "4 star", "3 star"]); // Update available filters
       })
       .catch((error) => console.error("Error fetching products:", error));
-  }, []);
+  }, [onAvailableFiltersUpdate]);
 
-  const toggleSelection = (
-    list: string[],
-    setList: React.Dispatch<React.SetStateAction<string[]>>,
-    item: string
-  ) => {
-    setList((prev) =>
-      prev.includes(item) ? prev.filter((el) => el !== item) : [...prev, item]
-    );
+  const toggleSelection = (brand) => {
+    const newFilters = activeFilters.includes(brand)
+      ? activeFilters.filter((filter) => filter !== brand)
+      : [...activeFilters, brand];
+    onFilterChange(newFilters);
   };
 
   return (
@@ -68,10 +67,8 @@ const Sidebar: React.FC = () => {
               <input
                 type="checkbox"
                 id={brand}
-                checked={selectedBrands.includes(brand)}
-                onChange={() =>
-                  toggleSelection(selectedBrands, setSelectedBrands, brand)
-                }
+                checked={activeFilters.includes(brand)}
+                onChange={() => toggleSelection(brand)}
               />
               <label htmlFor={brand} style={styles.label}>
                 {brand}

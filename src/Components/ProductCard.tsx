@@ -4,9 +4,11 @@ import clear from "../assets/images/icons/clear.svg";
 import starColored from "../assets/images/icons/star_colored.svg";
 import starNoColor from "../assets/images/icons/star_uncolored.svg";
 import favIcon from "../assets/images/icons/favorite_border.svg";
+import leftVector from "../assets/images/icons/chevron-left.svg";
+import rightVector from "../assets/images/icons/chevron-right.svg";
 
-const ProductsCard: React.FC = () => {
-  const [filters, setFilters] = useState<string[]>([
+const ProductsCard = () => {
+  const [filters, setFilters] = useState([
     "Knoll",
     "Essence",
     "Gucci",
@@ -14,61 +16,92 @@ const ProductsCard: React.FC = () => {
     "4 star",
     "3 star",
   ]);
+  const [activeFilters, setActiveFilters] = useState([]);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [sortOption, setSortOption] = useState("featured");
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState([]);
 
-  // Fetching products from server
   useEffect(() => {
     fetch("https://dummyjson.com/products?limit=9")
       .then((res) => res.json())
-      .then((data) => setProducts(data.products))
+      .then((data) => {
+        // Add brands to products for demonstration
+        const productsWithBrands = data.products.map((product) => ({
+          ...product,
+          brand: ["Knoll", "Essence", "Gucci", "Dior"][
+            Math.floor(Math.random() * 4)
+          ],
+        }));
+        setProducts(productsWithBrands);
+      })
       .catch((err) => console.error("Error fetching products:", err));
   }, []);
 
-  // Sorting function
-  const sortProducts = (option: string) => {
-    let sortedProducts = [...products];
-    switch (option) {
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
+  const handleRemoveFilter = (filterToRemove) => {
+    setActiveFilters(
+      activeFilters.filter((filter) => filter !== filterToRemove)
+    );
+  };
+
+  const clearAllFilters = () => {
+    setActiveFilters([]);
+  };
+
+  const toggleFilter = (filter) => {
+    if (activeFilters.includes(filter)) {
+      handleRemoveFilter(filter);
+    } else {
+      setActiveFilters([...activeFilters, filter]);
+    }
+  };
+
+  // Filter and sort products
+  const getFilteredProducts = () => {
+    let filtered = [...products];
+
+    // Apply brand and rating filters
+    if (activeFilters.length > 0) {
+      filtered = filtered.filter((product) => {
+        const brandFilters = activeFilters.filter((f) => !f.includes("star"));
+        const ratingFilters = activeFilters.filter((f) => f.includes("star"));
+
+        const matchesBrand =
+          brandFilters.length === 0 || brandFilters.includes(product.brand);
+
+        const matchesRating =
+          ratingFilters.length === 0 ||
+          ratingFilters.some((filter) => {
+            const requiredStars = parseInt(filter.split(" ")[0]);
+            return product.rating >= requiredStars;
+          });
+
+        return matchesBrand && matchesRating;
+      });
+    }
+
+    // Apply sorting
+    switch (sortOption) {
       case "price-low":
-        sortedProducts = sortedProducts.sort((a, b) => a.price - b.price);
+        filtered.sort((a, b) => a.price - b.price);
         break;
       case "price-high":
-        sortedProducts = sortedProducts.sort((a, b) => b.price - a.price);
+        filtered.sort((a, b) => b.price - a.price);
         break;
       case "rating":
-        sortedProducts = sortedProducts.sort((a, b) => b.rating - a.rating);
+        filtered.sort((a, b) => b.rating - a.rating);
         break;
       default:
         break;
     }
-    return sortedProducts;
+
+    return filtered;
   };
 
-  // Handle sort option change
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortOption(e.target.value);
-  };
-
-  // Filter products based on selected filters
-  const filteredProducts = products.filter((product) => {
-    // Check if the product matches any of the selected filters
-    const brandMatch = filters.some((filter) =>
-      product.brand.toLowerCase().includes(filter.toLowerCase())
-    );
-    const ratingMatch = filters.some((filter) =>
-      filter.includes("star") ? product.rating >= parseInt(filter) : false
-    );
-    return (brandMatch || ratingMatch) && (!verifiedOnly || product.isVerified);
-  });
-
-  const handleRemoveFilter = (filter: string) => {
-    setFilters(filters.filter((f) => f !== filter));
-  };
-
-  const clearAllFilters = () => {
-    setFilters([]);
-  };
+  const filteredProducts = getFilteredProducts();
 
   return (
     <div style={styles.productCardContainer}>
@@ -76,7 +109,7 @@ const ProductsCard: React.FC = () => {
         <ul style={styles.ul}>
           <li style={styles.li}>
             <p>
-              12,911 Items in <b>Mobile accessory</b>
+              {filteredProducts.length} Items in <b>Mobile accessory</b>
             </p>
           </li>
           <div style={styles.rightTop}>
@@ -113,18 +146,33 @@ const ProductsCard: React.FC = () => {
       <div style={styles.filters}>
         <ul style={styles.ul}>
           {filters.map((filter) => (
-            <li style={styles.li} key={filter}>
+            <li key={filter} style={styles.li}>
               <div style={styles.filterItem}>
                 <button
-                  style={styles.button}
-                  onClick={() => handleRemoveFilter(filter)}
+                  style={{
+                    ...styles.button,
+                    backgroundColor: activeFilters.includes(filter)
+                      ? "#E5F1FF"
+                      : "#FFFFFF",
+                  }}
+                  onClick={() => toggleFilter(filter)}
                 >
-                  {filter} <img src={clear} alt="clear" />
+                  {filter}
+                  {activeFilters.includes(filter) && (
+                    <img
+                      src={clear}
+                      alt="clear"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveFilter(filter);
+                      }}
+                    />
+                  )}
                 </button>
               </div>
             </li>
           ))}
-          {filters.length > 0 && (
+          {activeFilters.length > 0 && (
             <button style={styles.clearAll} onClick={clearAllFilters}>
               Clear all filters
             </button>
@@ -134,7 +182,7 @@ const ProductsCard: React.FC = () => {
 
       {/* Product cards */}
       <div style={styles.cardsContainer}>
-        {sortProducts(sortOption).map((product) => (
+        {filteredProducts.map((product) => (
           <div style={styles.cardBox} key={product.id}>
             <img
               src={product.thumbnail}
@@ -148,7 +196,6 @@ const ProductsCard: React.FC = () => {
                   <del>${(product.price * 1.1).toFixed(2)}</del>
                 </span>
               </div>
-
               <div style={styles.favButton}>
                 <img src={favIcon} alt="fav" />
               </div>
@@ -156,7 +203,11 @@ const ProductsCard: React.FC = () => {
                 {Array.from({ length: 5 }).map((_, index) => (
                   <img
                     key={index}
-                    src={index < product.rating ? starColored : starNoColor}
+                    src={
+                      index < Math.floor(product.rating)
+                        ? starColored
+                        : starNoColor
+                    }
                     alt="rating"
                   />
                 ))}
@@ -165,6 +216,36 @@ const ProductsCard: React.FC = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      <div style={styles.pagination}>
+        <ul style={styles.ulPage}>
+          <li style={styles.liPage}>
+            <select
+              style={styles.page}
+              value={sortOption}
+              onChange={handleSortChange}
+            >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </li>
+          <div style={styles.pageContinaer}>
+            <li style={styles.liPage}>
+              <img src={leftVector} alt="vector" />
+            </li>
+            <li style={styles.liPage}>1</li>
+            <li style={styles.liPage}>2</li>
+            <li style={styles.liPage}>3</li>
+            <li style={styles.liPage}>4</li>
+            <li style={styles.liPage}>
+              <img src={rightVector} alt="vector" />
+            </li>
+          </div>
+        </ul>
       </div>
     </div>
   );
@@ -206,7 +287,6 @@ const styles = {
     fontSize: "1.1rem",
     margin: "10px 0",
   },
-
   priceContainer: {
     display: "flex",
     alignItems: "center",
@@ -263,6 +343,18 @@ const styles = {
     gap: "10px",
     justifyContent: "space-between",
   },
+  ulPage: {
+    display: "flex",
+    alignItems: "center",
+    listStyle: "none",
+
+  },
+  liPage: {
+    display: "flex",
+    alignItems: "center",
+    border: "1px solid #DEE2E7",
+    padding: "10px",
+  },
   li: {
     display: "flex",
     alignItems: "center",
@@ -277,6 +369,16 @@ const styles = {
     cursor: "pointer",
     border: "1px solid #E0E0E0",
   },
+  page: {
+    width: "100px",
+    borderRadius: "6px",
+    fontSize: "1rem",
+    padding: "10px 0px",
+    outline: "none",
+    backgroundColor: "#fff",
+    cursor: "pointer",
+    border: "1px solid #E0E0E0",
+  },
   pSpace: {
     marginLeft: "8px",
     fontSize: "16px",
@@ -286,6 +388,19 @@ const styles = {
     marginTop: "10px",
     fontSize: "0.9rem",
     color: "#606060",
+  },
+
+  pagination: {
+    display: "flex",
+    justifyContent: "flex-end",
+
+  },
+
+  pageContinaer: {
+    display: "flex",
+    alignItems: "center",
+
+    border: "1px solid #DEE2E7",
   },
 };
 
