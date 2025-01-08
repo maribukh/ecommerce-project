@@ -106,10 +106,10 @@ const ProductsCard = () => {
   return (
     <div style={styles.productCardContainer}>
       <div style={styles.contentTop}>
-        <ul style={styles.ul}>
+        <ul style={styles.ulFilter }>
           <li style={styles.li}>
             <p>
-              {filteredProducts.length} Items in <b>Mobile accessory</b>
+              {filteredProducts.length} Items in <b>Beauty</b>
             </p>
           </li>
           <div style={styles.rightTop}>
@@ -307,6 +307,7 @@ const styles = {
     marginBottom: "10px",
   },
   filters: {
+    width: "80%",
     marginTop: "10px",
   },
   filterItem: {
@@ -340,21 +341,38 @@ const styles = {
     listStyle: "none",
     padding: "0",
     margin: "0",
-    gap: "10px",
-    justifyContent: "space-between",
+    gap: "0px",
   },
   ulPage: {
     display: "flex",
     alignItems: "center",
     listStyle: "none",
+  },
 
+  ulFilter: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    margin: "0",
+    padding: "0",
   },
   liPage: {
+    width: "16px",
+    height: "16px",
     display: "flex",
+    justifyContent: "center",
+
     alignItems: "center",
     border: "1px solid #DEE2E7",
     padding: "10px",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    cursor: "pointer",
   },
+
+  liPageHover: {
+    backgorundColor: "#DEE2E7",
+  },
+
   li: {
     display: "flex",
     alignItems: "center",
@@ -393,7 +411,6 @@ const styles = {
   pagination: {
     display: "flex",
     justifyContent: "flex-end",
-
   },
 
   pageContinaer: {
