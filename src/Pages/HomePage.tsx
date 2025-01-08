@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../Components/Sidebar";
 import ProductCard from "../Pages/ProductsPage";
 
 const HomePage: React.FC = () => {

@@ -8,6 +8,8 @@ import ProductDetailsPage from "./Pages/ProductDetailsPage";
 import BurgerIcon from "./assets/images/icons/burger.svg";
 import DropdownIcon from "./assets/images/icons/dropDown.svg";
 import RightVector from "./assets/images/icons/rightVector.svg";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 
 function App() {
   return (
