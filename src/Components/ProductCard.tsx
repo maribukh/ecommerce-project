@@ -85,8 +85,16 @@ const ProductsCard: React.FC = () => {
 
       {/* cards product */}
       <div style={styles.cardsContainer}>
-        <div style={styles}></div>
-
+        <div style={styles.cardBox}>
+          <img src={} alt="Button group icons" />
+          <div style={styles.cardBotton}>
+            <h1 style={styles.h1}>$99.50</h1>
+            <span style={styles.span}><del>$1128.00</del></span>
+            <div style={styles.starsContainer}>
+              
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -112,6 +120,8 @@ const styles = {
   },
 
   cardsContainer: {},
+
+  cardBox: {},
 
   filters: {
     marginTop: "10px",
