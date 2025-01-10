@@ -6,7 +6,8 @@ import starNoColor from "../assets/images/icons/star_uncolored.svg";
 import favIcon from "../assets/images/icons/favorite_border.svg";
 import leftVector from "../assets/images/icons/chevron-left.svg";
 import rightVector from "../assets/images/icons/chevron-right.svg";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+
 const ProductsCard = () => {
   const [filters, setFilters] = useState([
     "Knoll",
@@ -20,22 +21,33 @@ const ProductsCard = () => {
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [sortOption, setSortOption] = useState("featured");
   const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); // Track current page
+  const [totalProducts, setTotalProducts] = useState(0); // Total number of products
+  const [loading, setLoading] = useState(false); // Loading state
+
+  const productsPerPage = 10; // Number of products per page
 
   useEffect(() => {
-    fetch("https://dummyjson.com/products?limit=9")
-      .then((res) => res.json())
-      .then((data) => {
-        // Add brands to products for demonstration
-        const productsWithBrands = data.products.map((product) => ({
-          ...product,
-          brand: ["Knoll", "Essence", "Gucci", "Dior"][
-            Math.floor(Math.random() * 4)
-          ],
-        }));
-        setProducts(productsWithBrands);
-      })
-      .catch((err) => console.error("Error fetching products:", err));
-  }, []);
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://dummyjson.com/products?limit=${productsPerPage}&skip=${
+            (currentPage - 1) * productsPerPage
+          }`
+        );
+        const data = await response.json();
+        setProducts(data.products);
+        setTotalProducts(data.total); // Set total products
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [currentPage]); // Re-fetch when the page changes
 
   const handleSortChange = (e) => {
     setSortOption(e.target.value);
@@ -116,13 +128,11 @@ const ProductsCard = () => {
     return (
       <div onClick={handleClick} style={{ cursor: "pointer" }}>
         <h3>{name}</h3>
-        {/* Остальная информация о продукте */}
       </div>
     );
   };
 
-
-  
+  const totalPages = Math.ceil(totalProducts / productsPerPage); // Calculate total pages
 
   return (
     <div style={styles.productCardContainer}>
@@ -205,69 +215,66 @@ const ProductsCard = () => {
 
       {/* Product cards */}
       <div style={styles.cardsContainer}>
-        {filteredProducts.map((product) => (
-          <div style={styles.cardBox} key={product.id}>
-            <img
-              src={product.thumbnail}
-              alt={product.title}
-              style={{ width: "100%", height: "auto" }}
-            />
-            <div style={styles.cardBottom}>
-              <div style={styles.priceContainer}>
-                <h1 style={styles.h1}>${product.price.toFixed(2)}</h1>
-                <span style={styles.span}>
-                  <del>${(product.price * 1.1).toFixed(2)}</del>
-                </span>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          filteredProducts.map((product) => (
+            <div style={styles.cardBox} key={product.id}>
+              <img
+                src={product.thumbnail}
+                alt={product.title}
+                style={{ width: "100%", height: "auto" }}
+              />
+              <div style={styles.cardBottom}>
+                <div style={styles.priceContainer}>
+                  <h1 style={styles.h1}>${product.price.toFixed(2)}</h1>
+                  <span style={styles.span}>
+                    <del>${(product.price * 1.1).toFixed(2)}</del>
+                  </span>
+                </div>
+                <div style={styles.favButton}>
+                  <img src={favIcon} alt="fav" />
+                </div>
+                <div style={styles.starsContainer}>
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <img
+                      key={index}
+                      src={
+                        index < Math.floor(product.rating)
+                          ? starColored
+                          : starNoColor
+                      }
+                      alt="rating"
+                    />
+                  ))}
+                </div>
+                <p style={styles.description}>{product.description}</p>
               </div>
-              <div style={styles.favButton}>
-                <img src={favIcon} alt="fav" />
-              </div>
-              <div style={styles.starsContainer}>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <img
-                    key={index}
-                    src={
-                      index < Math.floor(product.rating)
-                        ? starColored
-                        : starNoColor
-                    }
-                    alt="rating"
-                  />
-                ))}
-              </div>
-              <p style={styles.description}>{product.description}</p>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
+      {/* Pagination */}
       <div style={styles.pagination}>
         <ul style={styles.ulPage}>
           <li style={styles.li}>
-            <select
-              style={styles.page}
-              value={sortOption}
-              onChange={handleSortChange}
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => prev - 1)}
             >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
+              <img src={leftVector} alt="left" />
+            </button>
           </li>
-          <div style={styles.pageContinaer}>
-            <li style={styles.liPage}>
-              <img src={leftVector} alt="vector" />
-            </li>
-            <li style={styles.liPage}>1</li>
-            <li style={styles.liPage}>2</li>
-            <li style={styles.liPage}>3</li>
-            <li style={styles.liPage}>4</li>
-            <li style={styles.liPage}>
-              <img src={rightVector} alt="vector" />
-            </li>
-          </div>
+          <li style={styles.li}>{currentPage}</li>
+          <li style={styles.li}>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+            >
+              <img src={rightVector} alt="right" />
+            </button>
+          </li>
         </ul>
       </div>
     </div>
