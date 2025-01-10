@@ -8,30 +8,31 @@ const ProductDetailsPage = () => {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-
         const response = await fetch(`https://dummyjson.com/products/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch product details");
+        }
         const data = await response.json();
-        setProduct(data); а
+        setProduct(data);
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
     };
 
     if (id) {
-      fetchProductDetails(); 
+      fetchProductDetails();
     }
   }, [id]);
 
   if (!product) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   return (
     <div style={styles.productDetailsContainer}>
       <h1>{product.title}</h1>
-
       <img
-        src={product.image} 
+        src={product.image}
         alt={product.title}
         style={styles.productImage}
       />

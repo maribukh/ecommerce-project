@@ -21,13 +21,13 @@ const ProductsCard = () => {
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [sortOption, setSortOption] = useState("featured");
   const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1); // Track current page
-  const [totalProducts, setTotalProducts] = useState(0); // Total number of products
-  const [loading, setLoading] = useState(false); // Loading state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  const productsPerPage = 9; // Количество продуктов на странице
+  const productsPerPage = 9;
 
-  const navigate = useNavigate(); // Initialize navigate from react-router-dom
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,7 +40,7 @@ const ProductsCard = () => {
         );
         const data = await response.json();
         setProducts(data.products);
-        setTotalProducts(data.total); // Set total products
+        setTotalProducts(data.total);
       } catch (err) {
         console.error("Error fetching products:", err);
       } finally {
@@ -49,7 +49,7 @@ const ProductsCard = () => {
     };
 
     fetchProducts();
-  }, [currentPage]); // Re-fetch when the page changes
+  }, [currentPage]);
 
   const handleSortChange = (e) => {
     setSortOption(e.target.value);
@@ -73,11 +73,9 @@ const ProductsCard = () => {
     }
   };
 
-  // Filter and sort products
   const getFilteredProducts = () => {
     let filtered = [...products];
 
-    // Apply brand and rating filters
     if (activeFilters.length > 0) {
       filtered = filtered.filter((product) => {
         const brandFilters = activeFilters.filter((f) => !f.includes("star"));
@@ -97,7 +95,6 @@ const ProductsCard = () => {
       });
     }
 
-    // Apply sorting
     switch (sortOption) {
       case "price-low":
         filtered.sort((a, b) => a.price - b.price);
@@ -117,29 +114,23 @@ const ProductsCard = () => {
 
   const filteredProducts = getFilteredProducts();
 
-  // Navigate to product details page on card click
-  const ProductCard: React.FC<{
-    id: number;
-    name: string;
-    thumbnail: string;
-  }> = ({ id, name, thumbnail }) => {
+  const ProductCard = ({ id, thumbnail }) => {
     const handleClick = () => {
-      navigate(`/product/${id}`); // Redirect to product details page
+      navigate(`/product/${id}`);
     };
 
     return (
       <div onClick={handleClick} style={{ cursor: "pointer" }}>
         <img
           src={thumbnail}
-          alt={name}
+          alt="Product thumbnail"
           style={{ width: "100%", height: "auto", borderRadius: "8px" }}
         />
-        <h3>{name}</h3>
       </div>
     );
   };
 
-  const totalPages = Math.ceil(totalProducts / productsPerPage); // Calculate total pages
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
 
   return (
     <div style={styles.productCardContainer}>
@@ -182,7 +173,6 @@ const ProductsCard = () => {
         </ul>
       </div>
 
-      {/* Filters */}
       <div style={styles.filters}>
         <ul style={styles.ul}>
           {filters.map((filter) => (
@@ -220,18 +210,13 @@ const ProductsCard = () => {
         </ul>
       </div>
 
-      {/* Product cards */}
       <div style={styles.cardsContainer}>
         {loading ? (
           <p>Loading...</p>
         ) : (
           filteredProducts.map((product) => (
             <div style={styles.cardBox} key={product.id}>
-              <ProductCard
-                id={product.id}
-                name={product.title}
-                thumbnail={product.thumbnail}
-              />
+              <ProductCard id={product.id} thumbnail={product.thumbnail} />
               <div style={styles.cardBottom}>
                 <div style={styles.priceContainer}>
                   <h1 style={styles.h1}>${product.price.toFixed(2)}</h1>
@@ -254,32 +239,64 @@ const ProductsCard = () => {
                       alt="rating"
                     />
                   ))}
+    
+                  <span style={styles.ratingText}>
+                    {product.rating.toFixed(1)}
+                  </span>
                 </div>
-                <p style={styles.description}>{product.description}</p>
+                <p style={styles.title}>{product.title}</p>
               </div>
             </div>
           ))
         )}
       </div>
 
-      {/* Pagination */}
       <div style={styles.pagination}>
         <ul style={styles.ulPage}>
-          <li style={styles.li}>
+          <li style={styles.liPage}>
             <button
+              style={{
+                ...styles.paginationButton,
+                ...(currentPage === 1 && styles.disabledButton),
+              }}
               disabled={currentPage === 1}
-              onClick={() => setCurrentPage((prev) => prev - 1)}
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             >
-              <img src={leftVector} alt="left" />
+              <img src={leftVector} alt="Back" style={styles.arrowIcon} />
             </button>
           </li>
-          <li style={styles.li}>{currentPage}</li>
-          <li style={styles.li}>
+
+          {Array.from({ length: 4 }, (_, index) => {
+            const pageNumber = index + 1;
+            if (pageNumber <= totalPages) {
+              return (
+                <li key={pageNumber} style={styles.liPage}>
+                  <button
+                    style={{
+                      ...styles.paginationButton,
+                      ...(currentPage === pageNumber &&
+                        styles.activePageButton),
+                    }}
+                    onClick={() => setCurrentPage(pageNumber)}
+                  >
+                    {pageNumber}
+                  </button>
+                </li>
+              );
+            }
+            return null;
+          })}
+
+          <li style={styles.liPage}>
             <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((prev) => prev + 1)}
+              style={{
+                ...styles.paginationButton,
+                ...(currentPage === 1 && styles.disabledButton),
+              }}
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             >
-              <img src={rightVector} alt="right" />
+              <img src={rightVector} alt="back" style={styles.arrowIcon} />
             </button>
           </li>
         </ul>
@@ -287,6 +304,7 @@ const ProductsCard = () => {
     </div>
   );
 };
+
 const styles = {
   productCardContainer: {},
   contentTop: {
@@ -319,7 +337,7 @@ const styles = {
     backgroundColor: "#FFFFFF",
     borderRadius: "8px",
     overflow: "hidden",
-    padding: "30px",
+    padding: "0px 30px",
     position: "relative",
   },
   cardBottom: {},
@@ -337,9 +355,16 @@ const styles = {
     fontSize: "0.9rem",
   },
   favButton: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "32px",
+    height: "32px",
+    border: "1px solid #E0E0E0",
+    borderRadius: "6px",
     position: "absolute",
-    top: "10px",
-    right: "10px",
+    top: "220px",
+    right: "20px",
     cursor: "pointer",
   },
   starsContainer: {
@@ -383,11 +408,6 @@ const styles = {
     margin: "0",
     gap: "0px",
   },
-  ulPage: {
-    display: "flex",
-    alignItems: "center",
-    listStyle: "none",
-  },
 
   ulFilter: {
     width: "100%",
@@ -395,18 +415,6 @@ const styles = {
     justifyContent: "space-between",
     margin: "0",
     padding: "0",
-  },
-  liPage: {
-    width: "16px",
-    height: "16px",
-    display: "flex",
-    justifyContent: "center",
-
-    alignItems: "center",
-    border: "1px solid #DEE2E7",
-    padding: "10px",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    cursor: "pointer",
   },
 
   liPageHover: {
@@ -448,16 +456,67 @@ const styles = {
     color: "#606060",
   },
 
-  pagination: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-
   pageContinaer: {
     display: "flex",
     alignItems: "center",
 
     border: "1px solid #DEE2E7",
+  },
+  pagination: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: "20px",
+    gap: "5px",
+  },
+  ulPage: {
+    display: "flex",
+    listStyle: "none",
+    padding: "0",
+    margin: "0",
+    gap: "5px",
+  },
+  liPage: {
+    display: "flex",
+  },
+  paginationButton: {
+    border: "1px solid #E0E0E0",
+    borderRadius: "4px",
+    padding: "6px 12px",
+    backgroundColor: "#FFFFFF",
+    color: "#505050",
+    fontSize: "14px",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    width: "40px",
+    height: "40px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  activePageButton: {
+    border: "1px solid #0D6EFD",
+    backgroundColor: "#E9F2FF",
+    fontWeight: "bold",
+    color: "#0D6EFD",
+  },
+  disabledButton: {
+    color: "#CCCCCC",
+    cursor: "not-allowed",
+  },
+  arrowIcon: {
+    width: "20px",
+    height: "20px",
+  },
+  ratingText: {
+    marginLeft: "10px",
+    fontSize: "1rem",
+    color: "#FF9017",
+  },
+
+  title: {
+    color: "#606060",
   },
 };
 

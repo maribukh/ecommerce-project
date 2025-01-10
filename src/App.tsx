@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
-import Sidebar from "./Components/Sidebar"; // Sidebar остался
+import Sidebar from "./Components/Sidebar";
 import ProductsCard from "./Components/ProductCard";
 import Footer from "./Components/Footer";
 import BurgerIcon from "./assets/images/icons/burger.svg";
@@ -77,7 +77,7 @@ function App() {
 
         <main style={styles.main}>
           <div style={styles.rightSide}>
-            {/* Sidebar only visible on the ProductsCard route */}
+            {/* Sidebar только на главной странице */}
             <Routes>
               <Route
                 path="/"
@@ -91,6 +91,7 @@ function App() {
               />
             </Routes>
           </div>
+
           <div style={styles.leftSide}>
             <Routes>
               <Route
@@ -105,6 +106,7 @@ function App() {
                   />
                 }
               />
+              {/* Страница продукта */}
               <Route path="/product/:id" element={<ProductDetailsPage />} />
             </Routes>
           </div>
@@ -123,9 +125,6 @@ const styles = {
   },
   main: {
     display: "flex",
-  },
-  content: {
-    flex: 1,
   },
   categoriesContainer: {
     display: "flex",
