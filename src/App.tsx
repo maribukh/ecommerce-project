@@ -77,7 +77,6 @@ function App() {
 
         <main style={styles.main}>
           <div style={styles.rightSide}>
-            {/* Sidebar только на главной странице */}
             <Routes>
               <Route
                 path="/"
@@ -106,7 +105,7 @@ function App() {
                   />
                 }
               />
-              {/* Страница продукта */}
+
               <Route path="/product/:id" element={<ProductDetailsPage />} />
             </Routes>
           </div>
@@ -161,6 +160,9 @@ const styles = {
     width: "100%",
     paddingLeft: "10px",
     paddingRight: "132px",
+  },
+  rightSide: {
+    flex: 1,
   },
 };
 
