@@ -7,6 +7,8 @@ import starColored from "../assets/images/icons/star_colored.svg";
 import starNoColor from "../assets/images/icons/star_uncolored.svg";
 import profile from "../assets/images/profile/profilephoto.svg";
 import germany from "../assets/images/icons/DE.svg";
+import verify from "../assets/images/icons/verified.svg";
+import worldwide from "../assets/images/icons/worldwide.svg";
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -129,25 +131,34 @@ const ProductDetailsPage = () => {
         <div style={styles.profileCard}>
           <div style={styles.topCard}>
             <img src={profile} alt="" />
-            <h2>
+            <p style={styles.pCard}>
               Supplier <br />
               Guanjoi Trading LLC
-            </h2>
+            </p>
           </div>
           <div style={styles.line}></div>
-          <div style={styles.bottomCard}>
+          <div style={styles.middleCard}>
             <ul style={styles.ul}>
               <li style={styles.li}>
                 <img src={germany} alt="flag" />
-                <p>Germany, Berlin</p>
+                <p style={styles.pMiddle}>Germany, Berlin</p>
               </li>
               <li style={styles.li}>
-                <img src={germany} alt="flag" />
-                <p>Germany, Berlin</p>
+                <img src={verify} alt="" />
+                <p style={styles.pMiddle}>Verified Seller</p>
+              </li>
+              <li style={styles.li}>
+                <img src={worldwide} alt="" />
+                <p style={styles.pMiddle}>Worldwide shipping</p>
               </li>
             </ul>
           </div>
+          <div style={styles.bottomCard}>
+            <button style={styles.firstButton}>Send inquiry</button>
+            <button style={styles.secondButton}>Seller’s profile</button>
+          </div>
         </div>
+        {/*  */}
       </div>
     </div>
   );
@@ -163,7 +174,7 @@ const styles = {
     paddingLeft: "122px",
   },
   leftSide: {
-    width: "28%",
+    width: "24%",
     padding: "20px",
     border: "1px solid #DEE2E7",
     borderRadius: "6px",
@@ -282,19 +293,58 @@ const styles = {
     borderBottom: "1px solid #E0E0E0",
   },
 
-  rightSide: {},
-  topCard: {},
-  profileCard: {},
+  rightSide: {
+    margin: "0px",
+  },
+  topCard: {
+    display: "flex",
+    alignItems: "center",
+    gap: "11px",
+    marginBottom: "20px",
+  },
+
+  pCard: {
+    margin: "0",
+    padding: "0",
+  },
+  profileCard: {
+    padding: "20px",
+    border: "1px solid #DEE2E7",
+    borderRadius: "6px",
+  },
 
   h1: {
     color: "#1C1C1C",
     fontSize: "20px",
+  },
+
+  h2: {
+    margin: "0px",
   },
   p: {
     fontSize: "14px",
     color: "#888",
     margin: "0",
     padding: "0",
+  },
+
+  pMiddle: {
+        margin: "0",
+    padding: "0",
+  },
+
+  ul: {
+    listStyle: "none",
+    margin: "0",
+    padding: "0",
+  },
+
+  li: {
+    display: "flex",
+    gap: "18px",
+    color: "#8B96A5",
+    margin: "8px 0px",
+
   },
 };
 
