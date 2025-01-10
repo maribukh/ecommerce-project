@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
-import Sidebar from "./Components/Sidebar";
+import Sidebar from "./Components/Sidebar"; // Sidebar остался
 import ProductsCard from "./Components/ProductCard";
 import Footer from "./Components/Footer";
 import BurgerIcon from "./assets/images/icons/burger.svg";
 import DropdownIcon from "./assets/images/icons/dropDown.svg";
 import RightVector from "./assets/images/icons/rightVector.svg";
+import ProductDetailsPage from "./Pages/ProductDetailsPage";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,7 +15,7 @@ function App() {
   const [activeFilters, setActiveFilters] = useState([]);
   const [availableFilters, setAvailableFilters] = useState([]);
 
-  const handleSearch = (query) => {
+  const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
@@ -22,11 +23,11 @@ function App() {
     setCartItems((prev) => [...prev, item]);
   };
 
-  const handleFilterChange = (filters) => {
+  const handleFilterChange = (filters: string[]) => {
     setActiveFilters(filters);
   };
 
-  const handleAvailableFiltersUpdate = (filters) => {
+  const handleAvailableFiltersUpdate = (filters: string[]) => {
     setAvailableFilters(filters);
   };
 
@@ -52,7 +53,6 @@ function App() {
           </ul>
         </div>
 
-
         <nav>
           <div style={styles.navContainer}>
             <ul style={styles.ul}>
@@ -75,14 +75,21 @@ function App() {
           </div>
         </nav>
 
-      
         <main style={styles.main}>
           <div style={styles.rightSide}>
-            <Sidebar
-              activeFilters={activeFilters}
-              onFilterChange={handleFilterChange}
-              onAvailableFiltersUpdate={handleAvailableFiltersUpdate}
-            />
+            {/* Sidebar only visible on the ProductsCard route */}
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Sidebar
+                    activeFilters={activeFilters}
+                    onFilterChange={handleFilterChange}
+                    onAvailableFiltersUpdate={handleAvailableFiltersUpdate}
+                  />
+                }
+              />
+            </Routes>
           </div>
           <div style={styles.leftSide}>
             <Routes>
@@ -98,6 +105,7 @@ function App() {
                   />
                 }
               />
+              <Route path="/product/:id" element={<ProductDetailsPage />} />
             </Routes>
           </div>
         </main>

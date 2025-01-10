@@ -1,72 +1,72 @@
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 
-const ProductDetailsPage: React.FC = () => {
-  const { id } = useParams();
-
-  // Здесь можно получить данные о продукте по ID через API
-  // Пример: const product = fetchProductById(id);
-
-  return (
-    <div>
-      <h1>Product Details for ID: {id}</h1>
-      {/* Отобразите детали продукта */}
-    </div>
-  );
-};
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  thumbnail: string;
-}
-
-const ProductDetailsPage: React.FC = () => {
-  const { id } = useParams(); // Получаем ID из URL
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const ProductDetailsPage = () => {
+  const { id } = useParams<{ id: string }>(); 
+  const [product, setProduct] = useState<any>(null);
 
   useEffect(() => {
-    // Функция для загрузки данных о продукте
-    const fetchProduct = async () => {
+    const fetchProductDetails = async () => {
       try {
+
         const response = await fetch(`https://dummyjson.com/products/${id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch product");
-        }
-        const data: Product = await response.json();
-        setProduct(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        const data = await response.json();
+        setProduct(data); а
+      } catch (error) {
+        console.error("Error fetching product details:", error);
       }
     };
 
-    fetchProduct();
+    if (id) {
+      fetchProductDetails(); 
+    }
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (!product) {
+    return <div>Loading...</div>; 
+  }
 
   return (
-    <div>
-      {product ? (
-        <>
-          <h1>{product.title}</h1>
-          <img src={product.thumbnail} alt={product.title} />
-          <p>{product.description}</p>
-          <p>Price: ${product.price}</p>
-        </>
-      ) : (
-        <p>Product not found</p>
-      )}
+    <div style={styles.productDetailsContainer}>
+      <h1>{product.title}</h1>
+
+      <img
+        src={product.image} 
+        alt={product.title}
+        style={styles.productImage}
+      />
+      <p>{product.description}</p>
+      <p>
+        <strong>Price: </strong>${product.price}
+      </p>
+      <p>
+        <strong>Rating: </strong>
+        {product.rating} stars
+      </p>
+      <button style={styles.addToCartButton}>Add to Cart</button>
     </div>
   );
 };
 
+const styles = {
+  productDetailsContainer: {
+    padding: "20px",
+    maxWidth: "800px",
+    margin: "0 auto",
+  },
+  productImage: {
+    width: "100%",
+    maxWidth: "400px",
+    height: "auto",
+  },
+  addToCartButton: {
+    padding: "10px 20px",
+    backgroundColor: "#0D6EFD",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+};
 
 export default ProductDetailsPage;

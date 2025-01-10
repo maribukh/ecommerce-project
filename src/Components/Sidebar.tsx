@@ -1,90 +1,141 @@
 import React, { useState, useEffect } from "react";
 import DropUp from "../assets/images/icons/DropUp.svg";
+import DropDown from "../assets/images/icons/DropDown.svg";
 
 const Sidebar = ({
   activeFilters,
   onFilterChange,
   onAvailableFiltersUpdate,
 }) => {
-  const [categories, setCategories] = useState([]);
-  const [brands, setBrands] = useState([]);
+  const [categories, setCategories] = useState<string[]>([]); 
+  const [brands, setBrands] = useState<string[]>([]); 
+  const [expandedCategories, setExpandedCategories] = useState(false);
+  const [expandedBrands, setExpandedBrands] = useState(false); 
 
   useEffect(() => {
+    // Fetch products to get categories and brands
     fetch("https://dummyjson.com/products")
       .then((response) => {
         if (!response.ok) throw new Error("Network response was not ok");
         return response.json();
       })
       .then((data) => {
+        console.log("Products data:", data); 
         if (!data.products) throw new Error("Invalid API response structure");
+
+
         const uniqueCategories = Array.from(
-          new Set(data.products.map((product) => product.category))
-        );
-        const uniqueBrands = Array.from(
-          new Set(data.products.map((product) => product.brand))
-        );
+          new Set(
+            data.products.map(
+              (product: { category: string }) => product.category
+            )
+          )
+        ).slice(0, 5);
         setCategories(uniqueCategories);
+
+
+        const uniqueBrands = Array.from(
+          new Set(
+            data.products.map((product: { brand: string }) => product.brand)
+          )
+        ).slice(0, 5);
         setBrands(uniqueBrands);
+
         onAvailableFiltersUpdate([...uniqueBrands, "4 star", "3 star"]);
       })
       .catch((error) => console.error("Error fetching products:", error));
   }, [onAvailableFiltersUpdate]);
 
-  const toggleSelection = (brand) => {
-    const newFilters = activeFilters.includes(brand)
-      ? activeFilters.filter((filter) => filter !== brand)
-      : [...activeFilters, brand];
+  const toggleSelection = (filter: string) => {
+    const newFilters = activeFilters.includes(filter)
+      ? activeFilters.filter((f) => f !== filter)
+      : [...activeFilters, filter];
     onFilterChange(newFilters);
+  };
+
+  const toggleCategoryVisibility = () => {
+    setExpandedCategories(!expandedCategories);
+  };
+
+  const toggleBrandVisibility = () => {
+    setExpandedBrands(!expandedBrands);
   };
 
   return (
     <aside style={styles.sidebar}>
-      {/* Category Section */}
       <div style={styles.section}>
-        <div style={styles.box}>
+        <div style={styles.box} onClick={toggleCategoryVisibility}>
           <h2 style={styles.h2}>Category</h2>
-          <img src={DropUp} alt="DropUp Icon" />
+          <img
+            src={expandedCategories ? DropUp : DropDown}
+            alt="Toggle visibility"
+            style={styles.toggleIcon}
+          />
         </div>
-        <ul style={styles.ul}>
-          {categories.map((category) => (
-            <li style={styles.li} key={category}>
-              {category}
+        {expandedCategories && categories.length > 0 && (
+          <ul style={styles.ul}>
+            {categories.map((category, index) => (
+              <li style={styles.li} key={index}>
+                <button
+                  onClick={() => toggleSelection(category)}
+                  style={{
+                    ...styles.button,
+                    backgroundColor: activeFilters.includes(category)
+                      ? "#E5F1FF"
+                      : "transparent", 
+                  }}
+                >
+                  {category}
+                </button>
+              </li>
+            ))}
+            <li style={styles.li}>
+              <a href="#" style={styles.link}>
+                See all
+              </a>
             </li>
-          ))}
-          <li style={styles.li}>
-            <a href="#" style={styles.link}>
-              See all
-            </a>
-          </li>
-        </ul>
+          </ul>
+        )}
+        {categories.length === 0 && (
+          <p style={styles.noData}>No categories available</p>
+        )}
       </div>
 
-      {/* Brands Section */}
+
       <div style={styles.section}>
-        <div style={styles.box}>
+        <div style={styles.box} onClick={toggleBrandVisibility}>
           <h2 style={styles.h2}>Brands</h2>
-          <img src={DropUp} alt="DropUp Icon" />
+          <img
+            src={expandedBrands ? DropUp : DropDown}
+            alt="Toggle visibility"
+            style={styles.toggleIcon}
+          />
         </div>
-        <ul style={styles.ul}>
-          {brands.map((brand) => (
-            <li style={styles.li} key={brand}>
-              <input
-                type="checkbox"
-                id={brand}
-                checked={activeFilters.includes(brand)}
-                onChange={() => toggleSelection(brand)}
-              />
-              <label htmlFor={brand} style={styles.label}>
-                {brand}
-              </label>
+        {expandedBrands && brands.length > 0 && (
+          <ul style={styles.ul}>
+            {brands.map((brand, index) => (
+              <li style={styles.li} key={index}>
+                <input
+                  type="checkbox"
+                  id={brand}
+                  checked={activeFilters.includes(brand)}
+                  onChange={() => toggleSelection(brand)}
+                />
+                <label htmlFor={brand} style={styles.label}>
+                  {brand}
+                </label>
+              </li>
+            ))}
+            <li style={styles.li}>
+              <a href="#" style={styles.link}>
+                See all
+              </a>
             </li>
-          ))}
-          <li style={styles.li}>
-            <a href="#" style={styles.link}>
-              See all
-            </a>
-          </li>
-        </ul>
+          </ul>
+        )}
+        {brands.length === 0 && (
+          <p style={styles.noData}>No brands available</p>
+        )}
       </div>
     </aside>
   );
@@ -104,6 +155,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
+    cursor: "pointer",
   },
   h2: {
     fontSize: "16px",
@@ -122,13 +174,35 @@ const styles = {
     alignItems: "center",
     cursor: "pointer",
   },
+  button: {
+    background: "none",
+    border: "none",
+    color: "#333",
+    cursor: "pointer",
+    fontSize: "14px",
+    textAlign: "left",
+    width: "100%",
+    padding: "8px",
+    borderRadius: "4px",
+    transition: "background-color 0.3s ease",
+  },
   label: {
     marginLeft: "8px",
     color: "#333",
+    fontSize: "14px", 
   },
   link: {
     color: "#007BFF",
     textDecoration: "none",
+  },
+  toggleIcon: {
+    width: "16px",
+    height: "16px",
+  },
+  noData: {
+    padding: "10px",
+    color: "#999",
+    fontSize: "14px",
   },
 };
 

@@ -25,7 +25,9 @@ const ProductsCard = () => {
   const [totalProducts, setTotalProducts] = useState(0); // Total number of products
   const [loading, setLoading] = useState(false); // Loading state
 
-  const productsPerPage = 10; // Number of products per page
+  const productsPerPage = 9; // Количество продуктов на странице
+
+  const navigate = useNavigate(); // Initialize navigate from react-router-dom
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -115,18 +117,23 @@ const ProductsCard = () => {
 
   const filteredProducts = getFilteredProducts();
 
-  const ProductCard: React.FC<{ id: number; name: string }> = ({
-    id,
-    name,
-  }) => {
-    const navigate = useNavigate();
-
+  // Navigate to product details page on card click
+  const ProductCard: React.FC<{
+    id: number;
+    name: string;
+    thumbnail: string;
+  }> = ({ id, name, thumbnail }) => {
     const handleClick = () => {
-      navigate(`/product/${id}`);
+      navigate(`/product/${id}`); // Redirect to product details page
     };
 
     return (
       <div onClick={handleClick} style={{ cursor: "pointer" }}>
+        <img
+          src={thumbnail}
+          alt={name}
+          style={{ width: "100%", height: "auto", borderRadius: "8px" }}
+        />
         <h3>{name}</h3>
       </div>
     );
@@ -220,10 +227,10 @@ const ProductsCard = () => {
         ) : (
           filteredProducts.map((product) => (
             <div style={styles.cardBox} key={product.id}>
-              <img
-                src={product.thumbnail}
-                alt={product.title}
-                style={{ width: "100%", height: "auto" }}
+              <ProductCard
+                id={product.id}
+                name={product.title}
+                thumbnail={product.thumbnail}
               />
               <div style={styles.cardBottom}>
                 <div style={styles.priceContainer}>
@@ -280,7 +287,6 @@ const ProductsCard = () => {
     </div>
   );
 };
-
 const styles = {
   productCardContainer: {},
   contentTop: {

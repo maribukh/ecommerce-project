@@ -22,7 +22,7 @@ const HomePage: React.FC = () => {
   const products = [
     { id: 1, name: "Product 1" },
     { id: 2, name: "Product 2" },
-    // Добавьте свои продукты
+
   ];
 
   return (
