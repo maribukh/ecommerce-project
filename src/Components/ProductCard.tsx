@@ -26,7 +26,6 @@ const ProductsCard = () => {
   const [loading, setLoading] = useState(false);
 
   const productsPerPage = 9;
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -88,6 +87,7 @@ const ProductsCard = () => {
           ratingFilters.length === 0 ||
           ratingFilters.some((filter) => {
             const requiredStars = parseInt(filter.split(" ")[0]);
+            // Ensure products with rating >= requiredStars are matched
             return product.rating >= requiredStars;
           });
 
@@ -131,6 +131,24 @@ const ProductsCard = () => {
   };
 
   const totalPages = Math.ceil(totalProducts / productsPerPage);
+
+  const visiblePages = () => {
+    const maxVisible = 4;
+    const pages = [];
+
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+    if (endPage - startPage < maxVisible - 1) {
+      startPage = Math.max(1, endPage - maxVisible + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
 
   return (
     <div style={styles.productCardContainer}>
@@ -194,7 +212,9 @@ const ProductsCard = () => {
                       alt="clear"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleRemoveFilter(filter);
+                        setActiveFilters(
+                          activeFilters.filter((f) => f !== filter)
+                        );
                       }}
                     />
                   )}
@@ -239,7 +259,6 @@ const ProductsCard = () => {
                       alt="rating"
                     />
                   ))}
-    
                   <span style={styles.ratingText}>
                     {product.rating.toFixed(1)}
                   </span>
@@ -266,37 +285,32 @@ const ProductsCard = () => {
             </button>
           </li>
 
-          {Array.from({ length: 4 }, (_, index) => {
-            const pageNumber = index + 1;
-            if (pageNumber <= totalPages) {
-              return (
-                <li key={pageNumber} style={styles.liPage}>
-                  <button
-                    style={{
-                      ...styles.paginationButton,
-                      ...(currentPage === pageNumber &&
-                        styles.activePageButton),
-                    }}
-                    onClick={() => setCurrentPage(pageNumber)}
-                  >
-                    {pageNumber}
-                  </button>
-                </li>
-              );
-            }
-            return null;
-          })}
+          {visiblePages().map((pageNumber) => (
+            <li key={pageNumber} style={styles.liPage}>
+              <button
+                style={{
+                  ...styles.paginationButton,
+                  ...(currentPage === pageNumber && styles.activePageButton),
+                }}
+                onClick={() => setCurrentPage(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            </li>
+          ))}
 
           <li style={styles.liPage}>
             <button
               style={{
                 ...styles.paginationButton,
-                ...(currentPage === 1 && styles.disabledButton),
+                ...(currentPage === totalPages && styles.disabledButton),
               }}
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === totalPages}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
             >
-              <img src={rightVector} alt="back" style={styles.arrowIcon} />
+              <img src={rightVector} alt="Next" style={styles.arrowIcon} />
             </button>
           </li>
         </ul>
@@ -305,8 +319,12 @@ const ProductsCard = () => {
   );
 };
 
+
+
 const styles = {
-  productCardContainer: {},
+  productCardContainer: {
+    padding: "20px",
+  },
   contentTop: {
     width: "100%",
     display: "flex",
@@ -408,7 +426,6 @@ const styles = {
     margin: "0",
     gap: "0px",
   },
-
   ulFilter: {
     width: "100%",
     display: "flex",
@@ -416,11 +433,6 @@ const styles = {
     margin: "0",
     padding: "0",
   },
-
-  liPageHover: {
-    backgorundColor: "#DEE2E7",
-  },
-
   li: {
     display: "flex",
     alignItems: "center",
@@ -435,31 +447,9 @@ const styles = {
     cursor: "pointer",
     border: "1px solid #E0E0E0",
   },
-  page: {
-    width: "100px",
-    borderRadius: "6px",
-    fontSize: "1rem",
-    padding: "10px 0px",
-    outline: "none",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    border: "1px solid #E0E0E0",
-  },
-  pSpace: {
-    marginLeft: "8px",
-    fontSize: "16px",
-    color: "#1C1C1C",
-  },
-  description: {
-    marginTop: "10px",
-    fontSize: "0.9rem",
-    color: "#606060",
-  },
-
   pageContinaer: {
     display: "flex",
     alignItems: "center",
-
     border: "1px solid #DEE2E7",
   },
   pagination: {
@@ -514,7 +504,6 @@ const styles = {
     fontSize: "1rem",
     color: "#FF9017",
   },
-
   title: {
     color: "#606060",
   },
