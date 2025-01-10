@@ -18,7 +18,7 @@ function App() {
     setSearchQuery(query);
   };
 
-  const handleAddToCart = (item) => {
+  const handleAddToCart = (item: any) => {
     setCartItems((prev) => [...prev, item]);
   };
 
@@ -35,7 +35,6 @@ function App() {
       <div>
         <Header onSearch={handleSearch} cartCount={cartItems.length} />
 
-        {/* Контейнер категорий */}
         <div style={styles.categoriesContainer}>
           <ul style={styles.ul}>
             <li style={styles.li}>
@@ -53,7 +52,7 @@ function App() {
           </ul>
         </div>
 
-        {/* Навигация */}
+
         <nav>
           <div style={styles.navContainer}>
             <ul style={styles.ul}>
@@ -76,7 +75,7 @@ function App() {
           </div>
         </nav>
 
-        {/* Основной контент */}
+      
         <main style={styles.main}>
           <div style={styles.rightSide}>
             <Sidebar
@@ -99,7 +98,6 @@ function App() {
                   />
                 }
               />
-              {/* ... другие маршруты */}
             </Routes>
           </div>
         </main>

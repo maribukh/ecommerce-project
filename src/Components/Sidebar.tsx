@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DropUp from "../assets/images/icons//DropUp.svg";
+import DropUp from "../assets/images/icons/DropUp.svg";
 
 const Sidebar = ({
   activeFilters,
@@ -11,8 +11,12 @@ const Sidebar = ({
 
   useEffect(() => {
     fetch("https://dummyjson.com/products")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+      })
       .then((data) => {
+        if (!data.products) throw new Error("Invalid API response structure");
         const uniqueCategories = Array.from(
           new Set(data.products.map((product) => product.category))
         );
@@ -21,7 +25,7 @@ const Sidebar = ({
         );
         setCategories(uniqueCategories);
         setBrands(uniqueBrands);
-        onAvailableFiltersUpdate([...uniqueBrands, "4 star", "3 star"]); // Update available filters
+        onAvailableFiltersUpdate([...uniqueBrands, "4 star", "3 star"]);
       })
       .catch((error) => console.error("Error fetching products:", error));
   }, [onAvailableFiltersUpdate]);
@@ -39,7 +43,7 @@ const Sidebar = ({
       <div style={styles.section}>
         <div style={styles.box}>
           <h2 style={styles.h2}>Category</h2>
-          <img src={DropUp} alt="" />
+          <img src={DropUp} alt="DropUp Icon" />
         </div>
         <ul style={styles.ul}>
           {categories.map((category) => (
@@ -59,7 +63,7 @@ const Sidebar = ({
       <div style={styles.section}>
         <div style={styles.box}>
           <h2 style={styles.h2}>Brands</h2>
-          <img src={DropUp} alt="" />
+          <img src={DropUp} alt="DropUp Icon" />
         </div>
         <ul style={styles.ul}>
           {brands.map((brand) => (

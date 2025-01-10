@@ -1,11 +1,11 @@
 import React from "react";
 import Sidebar from "../Components/Sidebar";
-import ProductCard from "../Pages/ProductsPage";
+import ProductCard from "../Components/ProductCard";
 
 const HomePage: React.FC = () => {
   return (
     <div className="home-page">
-      <Sidebar />
+      <Sidebar activeFilters={undefined} onFilterChange={undefined} onAvailableFiltersUpdate={undefined} />
       <div className="content">
         <h1></h1>
         <div className="products">
@@ -13,6 +13,23 @@ const HomePage: React.FC = () => {
           <ProductCard />
         </div>
       </div>
+    </div>
+  );
+};
+
+
+const HomePage: React.FC = () => {
+  const products = [
+    { id: 1, name: "Product 1" },
+    { id: 2, name: "Product 2" },
+    // Добавьте свои продукты
+  ];
+
+  return (
+    <div>
+      {products.map((product) => (
+        <ProductCard key={product.id} id={product.id} name={product.name} />
+      ))}
     </div>
   );
 };

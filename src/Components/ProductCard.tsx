@@ -6,7 +6,7 @@ import starNoColor from "../assets/images/icons/star_uncolored.svg";
 import favIcon from "../assets/images/icons/favorite_border.svg";
 import leftVector from "../assets/images/icons/chevron-left.svg";
 import rightVector from "../assets/images/icons/chevron-right.svg";
-
+import { useNavigate } from "react-router-dom"; 
 const ProductsCard = () => {
   const [filters, setFilters] = useState([
     "Knoll",
@@ -102,6 +102,27 @@ const ProductsCard = () => {
   };
 
   const filteredProducts = getFilteredProducts();
+
+  const ProductCard: React.FC<{ id: number; name: string }> = ({
+    id,
+    name,
+  }) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+      navigate(`/product/${id}`);
+    };
+
+    return (
+      <div onClick={handleClick} style={{ cursor: "pointer" }}>
+        <h3>{name}</h3>
+        {/* Остальная информация о продукте */}
+      </div>
+    );
+  };
+
+
+  
 
   return (
     <div style={styles.productCardContainer}>
