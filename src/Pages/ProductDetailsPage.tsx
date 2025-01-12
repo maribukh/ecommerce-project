@@ -10,6 +10,11 @@ import germany from "../assets/images/icons/DE.svg";
 import verify from "../assets/images/icons/verified.svg";
 import worldwide from "../assets/images/icons/worldwide.svg";
 import favIcon from "../assets/images/icons/heart.svg";
+import item from "../assets/images/items/1.svg";
+import item2 from "../assets/images/items/2.svg";
+import item3 from "../assets/images/items/3.svg";
+import item4 from "../assets/images/items/4.svg";
+import item5 from "../assets/images/items/5.svg";
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -119,7 +124,7 @@ const ProductDetailsPage = () => {
                 <div style={styles.line}></div>
 
                 <p>Classic shoes</p>
-                <p>Plastick Material</p>
+                <p>Plastic Material</p>
                 <p>Modern nice</p>
                 <div style={styles.line}></div>
 
@@ -164,23 +169,78 @@ const ProductDetailsPage = () => {
           </div>
           <div style={styles.save}>
             <img src={favIcon} alt="" />
-            <p style={styles.pSave}>Save for late</p>
+            <p style={styles.pSave}>Save for later</p>
           </div>
         </div>
       </div>
       <div style={styles.middleContainer}>
         <div style={styles.menu}>
           <ul style={styles.ulMenu}>
-            <li style={styles.li}>Description</li>
-            <li style={styles.li}>Reviews</li>
-
-            <li style={styles.li}>Shipping</li>
-
-            <li style={styles.li}>About Company</li>
+            <li style={styles.liMenuActive}>Description</li>
+            <li style={styles.liMenu}>Reviews</li>
+            <li style={styles.liMenu}>Shipping</li>
+            <li style={styles.liMenu}>About Company</li>
           </ul>
         </div>
         <div style={styles.middleRightSide}>
-          <p>You may like</p>
+          <p style={styles.pMenu}>You may like</p>
+          <div style={styles.itemsContainer}>
+            <div style={styles.itemsBox}>
+              <img src={item} alt="" />
+              <div style={styles.itemInfo}>
+                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
+                <p style={styles.p}>$7.00 - $99.50</p>
+              </div>
+            </div>
+            <div style={styles.itemsBox}>
+              <img src={item2} alt="" />
+              <div style={styles.itemInfo}>
+                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
+                <p style={styles.p}>$7.00 - $99.50</p>
+              </div>
+            </div>
+            <div style={styles.itemsBox}>
+              <img src={item3} alt="" />
+              <div style={styles.itemInfo}>
+                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
+                <p style={styles.p}>$7.00 - $99.50</p>
+              </div>
+            </div>
+            <div style={styles.itemsBox}>
+              <img src={item4} alt="" />
+              <div style={styles.itemInfo}>
+                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
+                <p style={styles.p}>$7.00 - $99.50</p>
+              </div>
+            </div>
+            <div style={styles.itemsBox}>
+              <img src={item5} alt="" />
+              <div style={styles.itemInfo}>
+                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
+                <p style={styles.p}>$7.00 - $99.50</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style={styles.blockRecommend}>
+        <h1 style={styles.h1}>Related Products</h1>
+        <div style={styles.cardsContainer}>
+          <div style={styles.cardBox}>
+            <img src="" alt="" />
+            <p style={styles.productitle}></p>
+            <p style={styles.productprice}></p>
+          </div>
+          <div style={styles.cardBox}>
+            <img src="" alt="" />
+            <p style={styles.productitle}></p>
+            <p style={styles.productprice}></p>
+          </div>
+          <div style={styles.cardBox}>
+            <img src="" alt="" />
+            <p style={styles.productitle}></p>
+            <p style={styles.productprice}></p>
+          </div>
         </div>
       </div>
     </div>
@@ -189,7 +249,8 @@ const ProductDetailsPage = () => {
 
 const styles = {
   container: {
-    padding: "20px 20px 20px 122px",
+    padding: "0px 0px 20px 122px",
+    margin: "auto",
   },
   productDetailsContainer: {
     display: "flex",
@@ -388,11 +449,12 @@ const styles = {
   h2: {
     margin: "0px",
   },
+
   p: {
     fontSize: "16px",
     color: "#888",
-    margin: "0",
-    padding: "0",
+    margin: "0px",
+    padding: "0px",
     fontWeight: "400",
   },
 
@@ -421,13 +483,95 @@ const styles = {
     margin: "8px 0px",
   },
 
+  menu: {
+    width: "65%",
+    height: "48px",
+    borderBottom: "1px solid #DEE2E7",
+  },
+
   ulMenu: {
+    width: "65%",
+    listStyle: "none",
+    margin: "0",
+    padding: "0",
     display: "flex",
+    justifyContent: "space-between",
   },
-  middleRightSide: {
-    fontWeight: "600",
+
+  liMenu: {
+    display: "flex",
+    padding: "16px 16px 13px 16px",
+    color: "#8B96A5",
+    cursor: "pointer",
+  },
+
+  liMenuActive: {
+    color: "#0D6EFD",
+    padding: "16px 16px 13px 16px",
+    fontWeight: "500",
+    borderBottom: "2px solid #0D6EFD",
+  },
+
+  pMenu: {
+    margin: "0px",
     color: "#1C1C1C",
+    fontWeight: "600",
+    marginBottom: "14px",
   },
+
+  middleRightSide: {
+    width: "23%",
+    background: "white",
+    padding: "20px 22px 36px 16px",
+    borderRadius: "6px",
+    border: "1px solid #DEE2E7",
+  },
+
+  middleContainer: {
+    display: "flex",
+    padding: "20px 0px 85px 0px",
+    justifyContent: "space-between",
+  },
+
+  itemsContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "16px",
+  },
+
+  itemsBox: {
+    display: "flex",
+    gap: "11px",
+  },
+
+  pItem: {
+    margin: "0px",
+    color: "#1C1C1C",
+    fontWeight: "400",
+    marginBottom: "3px",
+  },
+
+  itemInfo: {},
+
+  blockRecommend: {
+    padding: "20px 26px 35px 22px",
+    backgroundColor: "#FFFFFF",
+    border: "1px solid #DEE2E7",
+    borderRadius: "6px",
+  },
+
+  cardsContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+
+  cardBox: {
+    
+  },
+
+  productitle: {},
+
+  productprice: {},
 };
 
 export default ProductDetailsPage;
