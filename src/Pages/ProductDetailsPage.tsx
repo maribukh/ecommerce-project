@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; 
 import DoneVector from "../assets/images/icons/doneVector.svg";
 import message2 from "../assets/images/icons/message2.svg";
 import basketIcon from "../assets/images/icons/shopping_basket.svg";
@@ -16,11 +16,25 @@ import item3 from "../assets/images/items/3.svg";
 import item4 from "../assets/images/items/4.svg";
 import item5 from "../assets/images/items/5.svg";
 
+
+interface Product {
+  id: number;
+  title: string;
+  image: string;
+  price: number;
+  category: string;
+  rating: number;
+  thumbnail: string;
+}
+
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
+
     const fetchProductDetails = async () => {
       try {
         const response = await fetch(`https://dummyjson.com/products/${id}`);
@@ -39,6 +53,36 @@ const ProductDetailsPage = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+
+    const fetchRelatedProducts = async () => {
+      try {
+        const response = await fetch(`https://dummyjson.com/products`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch related products");
+        }
+        const data = await response.json();
+
+        const related = data.products.filter(
+          (item: Product) =>
+            item.category === product?.category && item.id !== product?.id
+        );
+
+        setRelatedProducts(related.slice(0, 6));
+      } catch (error) {
+        console.error("Error fetching related products:", error);
+      }
+    };
+
+    if (product) {
+      fetchRelatedProducts();
+    }
+  }, [product]);
+
+  const handleRelatedProductClick = (productId: number) => {
+    navigate(`/product/${productId}`);
+  };
+
   if (!product) {
     return <div>Loading...</div>;
   }
@@ -48,9 +92,12 @@ const ProductDetailsPage = () => {
       <div style={styles.productDetailsContainer}>
         <div style={styles.leftSide}>
           <img
-            src={product.image}
+            src={product?.image || "https://dummyjson.com/products"} 
             alt={product.title}
             style={styles.productImage}
+            onError={(e) => {
+              console.error("Failed to load image, using fallback"); 
+            }}
           />
         </div>
         <div style={styles.middleSide}>
@@ -91,15 +138,7 @@ const ProductDetailsPage = () => {
             </div>
             <div style={styles.priceContainer}>
               <div style={styles.box}>
-                <h1 style={styles.price}>${product.price.toFixed(2)}</h1>
-                <p style={styles.p}>50-100 pcs</p>
-              </div>
-              <div style={styles.middlebox}>
-                <h1 style={styles.price}>${product.price.toFixed(2)}</h1>
-                <p style={styles.p}>50-100 pcs</p>
-              </div>
-              <div style={styles.box}>
-                <h1 style={styles.price}>${product.price.toFixed(2)}</h1>
+                <h1 style={styles.price}>${product.price.toFixed(2)} </h1>
                 <p style={styles.p}>50-100 pcs</p>
               </div>
             </div>
@@ -226,27 +265,32 @@ const ProductDetailsPage = () => {
       <div style={styles.blockRecommend}>
         <h1 style={styles.h1}>Related Products</h1>
         <div style={styles.cardsContainer}>
-          <div style={styles.cardBox}>
-            <img src="" alt="" />
-            <p style={styles.productitle}></p>
-            <p style={styles.productprice}></p>
-          </div>
-          <div style={styles.cardBox}>
-            <img src="" alt="" />
-            <p style={styles.productitle}></p>
-            <p style={styles.productprice}></p>
-          </div>
-          <div style={styles.cardBox}>
-            <img src="" alt="" />
-            <p style={styles.productitle}></p>
-            <p style={styles.productprice}></p>
-          </div>
+          {relatedProducts.length > 0 ? (
+            relatedProducts.map((relatedProduct) => (
+              <div
+                key={relatedProduct.id}
+                style={styles.cardBox}
+                onClick={() => handleRelatedProductClick(relatedProduct.id)}
+              >
+                <img
+                  src={relatedProduct.thumbnail}
+                  alt={relatedProduct.title}
+                  style={styles.productImage}
+                />
+                <p style={styles.productitle}>{relatedProduct.title}</p>
+                <p style={styles.productprice}>
+                  ${relatedProduct.price.toFixed(2)}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p>No related products available</p>
+          )}
         </div>
       </div>
     </div>
   );
 };
-
 const styles = {
   container: {
     padding: "0px 0px 20px 122px",
@@ -263,22 +307,26 @@ const styles = {
     padding: "20px 20px 20px 20px",
   },
   leftSide: {
-    width: "30%",
-    padding: "20px",
-    border: "1px solid #DEE2E7",
-    borderRadius: "6px",
+    flex: 1,
+    display: "flex",
+    maxWidth: "100%",
   },
+
   middleSide: {
     width: "41%",
 
     padding: "0px 25px",
   },
+
   productImage: {
     width: "100%",
     maxWidth: "400px",
     height: "auto",
-    borderRadius: "10px",
+    borderRadius: "6px",
+    border: "1px solid #EEEEEE",
+    background: "#EEEEEE",
   },
+
   stock: {
     display: "flex",
     alignItems: "center",
@@ -554,7 +602,8 @@ const styles = {
   itemInfo: {},
 
   blockRecommend: {
-    padding: "20px 26px 35px 22px",
+    height: "350px",
+    padding: "20px 26px 0px 22px",
     backgroundColor: "#FFFFFF",
     border: "1px solid #DEE2E7",
     borderRadius: "6px",
@@ -566,12 +615,18 @@ const styles = {
   },
 
   cardBox: {
-    
+    width: "155px",
+    height: "155px",
+    cursor: "pointer",
   },
 
-  productitle: {},
+  productitle: {
+    color: "#505050",
+  },
 
-  productprice: {},
+  productprice: {
+    color: "#8B96A5",
+  },
 };
 
 export default ProductDetailsPage;

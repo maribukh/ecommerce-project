@@ -11,9 +11,9 @@ import ProductDetailsPage from "./Pages/ProductDetailsPage";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [cartItems, setCartItems] = useState([]);
-  const [activeFilters, setActiveFilters] = useState([]);
-  const [availableFilters, setAvailableFilters] = useState([]);
+  const [cartItems, setCartItems] = useState<any[]>([]); 
+  const [activeFilters, setActiveFilters] = useState<string[]>([]); 
+  const [availableFilters, setAvailableFilters] = useState<string[]>([]); 
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -105,7 +105,7 @@ function App() {
                   />
                 }
               />
-
+      
               <Route path="/product/:id" element={<ProductDetailsPage />} />
             </Routes>
           </div>
