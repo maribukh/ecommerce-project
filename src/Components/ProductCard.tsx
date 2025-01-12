@@ -87,7 +87,6 @@ const ProductsCard = () => {
           ratingFilters.length === 0 ||
           ratingFilters.some((filter) => {
             const requiredStars = parseInt(filter.split(" ")[0]);
-            // Ensure products with rating >= requiredStars are matched
             return product.rating >= requiredStars;
           });
 
@@ -114,9 +113,9 @@ const ProductsCard = () => {
 
   const filteredProducts = getFilteredProducts();
 
-  const ProductCard = ({ id, thumbnail }) => {
+  const ProductCard = ({ id, thumbnail, product }) => {
     const handleClick = () => {
-      navigate(`/product/${id}`);
+      navigate(`/product/${id}`, { state: { product } }); 
     };
 
     return (
@@ -236,7 +235,11 @@ const ProductsCard = () => {
         ) : (
           filteredProducts.map((product) => (
             <div style={styles.cardBox} key={product.id}>
-              <ProductCard id={product.id} thumbnail={product.thumbnail} />
+              <ProductCard
+                id={product.id}
+                thumbnail={product.thumbnail}
+                product={product}
+              />
               <div style={styles.cardBottom}>
                 <div style={styles.priceContainer}>
                   <h1 style={styles.h1}>${product.price.toFixed(2)}</h1>
@@ -318,8 +321,6 @@ const ProductsCard = () => {
     </div>
   );
 };
-
-
 
 const styles = {
   productCardContainer: {
