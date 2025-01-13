@@ -158,8 +158,6 @@ const ProductDetailsPage = () => {
               </div>
             </div>
           </div>
-
-          {/* Short Info */}
           <div style={styles.shortInfo}>
             <div style={styles.infoBox}>
               <div style={styles.leftTitle}>
@@ -170,15 +168,11 @@ const ProductDetailsPage = () => {
                 <p>Warranty:</p>
               </div>
               <div style={styles.rightDesctiption}>
-                <p>{product.price ? `Negotiable` : "Not Negotiable"}</p>
-                <p>{product.category || "N/A"}</p>
-                <p>{product.brand || "Unknown"}</p>
-                <p>{product.description || "No description available"}</p>
-                <p>
-                  {product.warranty
-                    ? `${product.warranty} years`
-                    : "No warranty"}
-                </p>
+                <p>Negotiable</p>
+                <p>Classic shoes</p>
+                <p>Plastic Material</p>
+                <p>Modern nice</p>
+                <p>2 years full warranty</p>
               </div>
             </div>
           </div>
@@ -243,7 +237,34 @@ const ProductDetailsPage = () => {
                 <p style={styles.p}>$7.00 - $99.50</p>
               </div>
             </div>
-            {/* Other item boxes */}
+            <div style={styles.itemsBox}>
+              <img src={item2} alt="" />
+              <div style={styles.itemInfo}>
+                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
+                <p style={styles.p}>$7.00 - $99.50</p>
+              </div>
+            </div>
+            <div style={styles.itemsBox}>
+              <img src={item3} alt="" />
+              <div style={styles.itemInfo}>
+                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
+                <p style={styles.p}>$7.00 - $99.50</p>
+              </div>
+            </div>
+            <div style={styles.itemsBox}>
+              <img src={item4} alt="" />
+              <div style={styles.itemInfo}>
+                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
+                <p style={styles.p}>$7.00 - $99.50</p>
+              </div>
+            </div>
+            <div style={styles.itemsBox}>
+              <img src={item5} alt="" />
+              <div style={styles.itemInfo}>
+                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
+                <p style={styles.p}>$7.00 - $99.50</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -277,7 +298,6 @@ const ProductDetailsPage = () => {
     </div>
   );
 };
-
 
 const styles = {
   container: {
