@@ -148,43 +148,37 @@ const ProductDetailsPage = () => {
                     >
                       ${product.price.toFixed(2)}
                     </p>
-            
                   </div>
                 )}
               </div>
               <div style={styles.box}>
-
                 <p style={{ ...styles.p, color: "#FA3434" }}>
                   ${discountedPrice}
                 </p>
               </div>
             </div>
           </div>
+
+          {/* Short Info */}
           <div style={styles.shortInfo}>
             <div style={styles.infoBox}>
               <div style={styles.leftTitle}>
                 <p>Price:</p>
-                <div style={styles.line}></div>
-                <p>Type:</p>
-                <p>Material:</p>
-                <p>Design:</p>
-                <div style={styles.line}></div>
-                <p>Customization:</p>
-                <p>Protection:</p>
+                <p>Category:</p>
+                <p>Brand:</p>
+                <p>Description:</p>
                 <p>Warranty:</p>
-                <div style={styles.line}></div>
               </div>
               <div style={styles.rightDesctiption}>
-                <p>Negotiable</p>
-                <div style={styles.line}></div>
-                <p>Classic shoes</p>
-                <p>Plastic Material</p>
-                <p>Modern nice</p>
-                <div style={styles.line}></div>
-                <p>Customized logo and design custom packages</p>
-                <p>Refund Policy</p>
-                <p>2 years full warranty</p>
-                <div style={styles.line}></div>
+                <p>{product.price ? `Negotiable` : "Not Negotiable"}</p>
+                <p>{product.category || "N/A"}</p>
+                <p>{product.brand || "Unknown"}</p>
+                <p>{product.description || "No description available"}</p>
+                <p>
+                  {product.warranty
+                    ? `${product.warranty} years`
+                    : "No warranty"}
+                </p>
               </div>
             </div>
           </div>
@@ -249,34 +243,7 @@ const ProductDetailsPage = () => {
                 <p style={styles.p}>$7.00 - $99.50</p>
               </div>
             </div>
-            <div style={styles.itemsBox}>
-              <img src={item2} alt="" />
-              <div style={styles.itemInfo}>
-                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
-                <p style={styles.p}>$7.00 - $99.50</p>
-              </div>
-            </div>
-            <div style={styles.itemsBox}>
-              <img src={item3} alt="" />
-              <div style={styles.itemInfo}>
-                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
-                <p style={styles.p}>$7.00 - $99.50</p>
-              </div>
-            </div>
-            <div style={styles.itemsBox}>
-              <img src={item4} alt="" />
-              <div style={styles.itemInfo}>
-                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
-                <p style={styles.p}>$7.00 - $99.50</p>
-              </div>
-            </div>
-            <div style={styles.itemsBox}>
-              <img src={item5} alt="" />
-              <div style={styles.itemInfo}>
-                <p style={styles.pItem}>Apple Watch Series Space Gray</p>
-                <p style={styles.p}>$7.00 - $99.50</p>
-              </div>
-            </div>
+            {/* Other item boxes */}
           </div>
         </div>
       </div>
@@ -310,6 +277,7 @@ const ProductDetailsPage = () => {
     </div>
   );
 };
+
 
 const styles = {
   container: {
@@ -406,11 +374,11 @@ const styles = {
   },
   priceContainer: {
     display: "flex",
-    justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "#FFF0DF",
     marginTop: "10px",
     marginBottom: "20px",
+    padding: "8px",
   },
   box: {
     padding: "15px",
