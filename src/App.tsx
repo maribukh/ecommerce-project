@@ -188,6 +188,7 @@ const styles = {
   },
 
   rightBox: {
+    width: "40%",
     display: "flex",
   },
 
@@ -213,6 +214,7 @@ const styles = {
   },
 
   ulNav: {
+    width: "100%",
     display: "flex",
     alignItems: "center",
     padding: "0",
