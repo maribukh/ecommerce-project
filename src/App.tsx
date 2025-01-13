@@ -8,12 +8,13 @@ import BurgerIcon from "./assets/images/icons/burger.svg";
 import DropdownIcon from "./assets/images/icons/dropDown.svg";
 import RightVector from "./assets/images/icons/rightVector.svg";
 import ProductDetailsPage from "./Pages/ProductDetailsPage";
+import DE from "../src/assets/images/icons/DE.svg";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [cartItems, setCartItems] = useState<any[]>([]); 
-  const [activeFilters, setActiveFilters] = useState<string[]>([]); 
-  const [availableFilters, setAvailableFilters] = useState<string[]>([]); 
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [availableFilters, setAvailableFilters] = useState<string[]>([]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -37,25 +38,44 @@ function App() {
         <Header onSearch={handleSearch} cartCount={cartItems.length} />
 
         <div style={styles.categoriesContainer}>
-          <ul style={styles.ul}>
-            <li style={styles.li}>
-              <img src={BurgerIcon} alt="icon" />
-              <p style={styles.pSpacing0}>All Category</p>
-            </li>
-            <li style={styles.li}>Hot offers</li>
-            <li style={styles.li}>Gift boxes</li>
-            <li style={styles.li}>Projects</li>
-            <li style={styles.li}>Menu Items</li>
-            <li style={styles.li}>
-              Help
-              <img src={DropdownIcon} alt="DropDown" />
-            </li>
-          </ul>
+          <div style={styles.leftSide}>
+            <ul style={styles.ul}>
+              <li style={styles.li}>
+                <img src={BurgerIcon} alt="icon" />
+                <p style={styles.pSpacing0}>All Category</p>
+              </li>
+              <li style={styles.li}>Hot offers</li>
+              <li style={styles.li}>Gift boxes</li>
+              <li style={styles.li}>Projects</li>
+              <li style={styles.li}>Menu Items</li>
+              <li style={styles.li}>
+                Help
+                <img src={DropdownIcon} alt="DropDown" />
+              </li>
+            </ul>
+          </div>
+          <div style={styles.rightBox}>
+            <div style={styles.langContainer}>
+              <ul style={styles.ulLang}>
+                <li style={styles.liLang}>English</li>
+                <li style={styles.liLang}>
+                  USD <img src={DropdownIcon} alt="" />
+                </li>
+              </ul>
+              <ul style={styles.ulLang}>
+                <li style={styles.liLang}>Ship to</li>
+                <li style={styles.liLang}>
+                  <img src={DE} alt="" />
+                  <img src={DropdownIcon} alt="" />
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <nav>
           <div style={styles.navContainer}>
-            <ul style={styles.ul}>
+            <ul style={styles.ulNav}>
               <li style={styles.li}>
                 <p style={styles.pSpacing}>Home</p>
                 <img src={RightVector} alt="right" />
@@ -105,7 +125,7 @@ function App() {
                   />
                 }
               />
-      
+
               <Route path="/product/:id" element={<ProductDetailsPage />} />
             </Routes>
           </div>
@@ -133,7 +153,7 @@ const styles = {
     backgroundColor: "#FFFFFF",
   },
   ul: {
-    width: "55%",
+    width: "85%",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
@@ -141,6 +161,7 @@ const styles = {
     listStyle: "none",
     margin: "0",
   },
+
   li: {
     display: "flex",
     alignItems: "center",
@@ -161,8 +182,42 @@ const styles = {
     paddingLeft: "10px",
     paddingRight: "132px",
   },
+
   rightSide: {
     flex: 1,
+  },
+
+  rightBox: {
+    display: "flex",
+  },
+
+  langContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+
+  ulLang: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "0",
+    listStyle: "none",
+    margin: "0",
+  },
+
+  liLang: {
+    display: "flex",
+    alignItems: "center",
+    marginRight: "10px",
+  },
+
+  ulNav: {
+    display: "flex",
+    alignItems: "center",
+    padding: "0",
+    listStyle: "none",
+    margin: "0",
   },
 };
 
