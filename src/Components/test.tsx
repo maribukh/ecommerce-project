@@ -16,10 +16,20 @@ import item3 from "../assets/images/items/3.svg";
 import item4 from "../assets/images/items/4.svg";
 import item5 from "../assets/images/items/5.svg";
 
+interface Product {
+  id: number;
+  title: string;
+  image: string;
+  price: number;
+  category: string;
+  rating: number;
+  thumbnail: string;
+}
+
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<any>(null);
-  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +40,6 @@ const ProductDetailsPage = () => {
           throw new Error("Failed to fetch product details");
         }
         const data = await response.json();
-        console.log("Product Data:", data);
         setProduct(data);
       } catch (error) {
         console.error("Error fetching product details:", error);
@@ -50,10 +59,12 @@ const ProductDetailsPage = () => {
           throw new Error("Failed to fetch related products");
         }
         const data = await response.json();
+
         const related = data.products.filter(
-          (item: any) =>
+          (item: Product) =>
             item.category === product?.category && item.id !== product?.id
         );
+
         setRelatedProducts(related.slice(0, 6));
       } catch (error) {
         console.error("Error fetching related products:", error);
@@ -76,21 +87,19 @@ const ProductDetailsPage = () => {
   return (
     <div style={styles.container}>
       <div style={styles.productDetailsContainer}>
-        {/* Left Side */}
         <div style={styles.leftSide}>
           <img
-            src={product.images?.[0] || "fallback-image-url.jpg"}
+            src={product?.image || "https://dummyjson.com/products"}
             alt={product.title}
             style={styles.productImage}
             onError={(e) => {
-              e.target.src = "fallback-image-url.jpg";
+              console.error("Failed to load image, using fallback");
             }}
           />
         </div>
-
         <div style={styles.middleSide}>
           <div style={styles.stock}>
-            <img src={DoneVector} alt="In Stock" />
+            <img src={DoneVector} alt="instock" />
             <span>In Stock</span>
           </div>
           <div style={styles.aboutProduct}>
@@ -105,7 +114,7 @@ const ProductDetailsPage = () => {
                         ? starColored
                         : starNoColor
                     }
-                    alt="Rating"
+                    alt="rating"
                     style={styles.starIcon}
                   />
                 ))}
@@ -115,18 +124,18 @@ const ProductDetailsPage = () => {
               </div>
               <div style={styles.reviewsSoldContainer}>
                 <div style={styles.reviewsContainer}>
-                  <img src={message2} alt="Reviews" style={styles.icon} />
+                  <img src={message2} alt="reviews" style={styles.icon} />
                   <span>32 reviews</span>
                 </div>
                 <div style={styles.soldContainer}>
-                  <img src={basketIcon} alt="Sold" style={styles.icon} />
+                  <img src={basketIcon} alt="sold" style={styles.icon} />
                   <span>154 sold</span>
                 </div>
               </div>
             </div>
             <div style={styles.priceContainer}>
               <div style={styles.box}>
-                <h1 style={styles.price}>${product.price.toFixed(2)}</h1>
+                <h1 style={styles.price}>${product.price.toFixed(2)} </h1>
                 <p style={styles.p}>50-100 pcs</p>
               </div>
             </div>
@@ -136,6 +145,7 @@ const ProductDetailsPage = () => {
               <div style={styles.leftTitle}>
                 <p>Price:</p>
                 <div style={styles.line}></div>
+
                 <p>Type:</p>
                 <p>Material:</p>
                 <p>Design:</p>
@@ -148,10 +158,12 @@ const ProductDetailsPage = () => {
               <div style={styles.rightDesctiption}>
                 <p>Negotiable</p>
                 <div style={styles.line}></div>
+
                 <p>Classic shoes</p>
                 <p>Plastic Material</p>
                 <p>Modern nice</p>
                 <div style={styles.line}></div>
+
                 <p>Customized logo and design custom packages</p>
                 <p>Refund Policy</p>
                 <p>2 years full warranty</p>
@@ -160,11 +172,10 @@ const ProductDetailsPage = () => {
             </div>
           </div>
         </div>
-        {/* Right Side */}
         <div style={styles.rightSide}>
           <div style={styles.profileCard}>
             <div style={styles.topCard}>
-              <img src={profile} alt="Profile" />
+              <img src={profile} alt="" />
               <p style={styles.pCard}>
                 Supplier <br />
                 Guanjoi Trading LLC
@@ -174,15 +185,15 @@ const ProductDetailsPage = () => {
             <div style={styles.middleCard}>
               <ul style={styles.ul}>
                 <li style={styles.li}>
-                  <img src={germany} alt="Germany Flag" />
+                  <img src={germany} alt="flag" />
                   <p style={styles.pMiddle}>Germany, Berlin</p>
                 </li>
                 <li style={styles.li}>
-                  <img src={verify} alt="Verified Seller" />
+                  <img src={verify} alt="" />
                   <p style={styles.pMiddle}>Verified Seller</p>
                 </li>
                 <li style={styles.li}>
-                  <img src={worldwide} alt="Worldwide Shipping" />
+                  <img src={worldwide} alt="" />
                   <p style={styles.pMiddle}>Worldwide shipping</p>
                 </li>
               </ul>
@@ -192,14 +203,12 @@ const ProductDetailsPage = () => {
               <button style={styles.secondButton}>Seller’s profile</button>
             </div>
           </div>
-
           <div style={styles.save}>
-            <img src={favIcon} alt="Favorite" />
+            <img src={favIcon} alt="" />
             <p style={styles.pSave}>Save for later</p>
           </div>
         </div>
       </div>
-
       <div style={styles.middleContainer}>
         <div style={styles.menu}>
           <ul style={styles.ulMenu}>
@@ -250,12 +259,11 @@ const ProductDetailsPage = () => {
           </div>
         </div>
       </div>
-
       <div style={styles.blockRecommend}>
         <h1 style={styles.h1}>Related Products</h1>
         <div style={styles.cardsContainer}>
           {relatedProducts.length > 0 ? (
-            relatedProducts.map((relatedProduct: any) => (
+            relatedProducts.map((relatedProduct) => (
               <div
                 key={relatedProduct.id}
                 style={styles.cardBox}
@@ -280,7 +288,6 @@ const ProductDetailsPage = () => {
     </div>
   );
 };
-
 const styles = {
   container: {
     padding: "0px 0px 20px 122px",
@@ -288,6 +295,7 @@ const styles = {
   },
   productDetailsContainer: {
     display: "flex",
+    // margin: "0 auto",
     maxWidth: "1100px",
     border: "1px solid #DEE2E7",
     borderRadius: "6px",
@@ -300,14 +308,13 @@ const styles = {
     display: "flex",
     maxWidth: "100%",
   },
+
   middleSide: {
     width: "41%",
+
     padding: "0px 25px",
   },
-  rightSide: {
-    width: "25%",
-    padding: "0px 15px",
-  },
+
   productImage: {
     width: "100%",
     maxWidth: "400px",
@@ -316,6 +323,7 @@ const styles = {
     border: "1px solid #EEEEEE",
     background: "#EEEEEE",
   },
+
   stock: {
     display: "flex",
     alignItems: "center",
@@ -380,6 +388,14 @@ const styles = {
     padding: "15px",
     textAlign: "center",
   },
+
+  middlebox: {
+    borderLeft: "1 solid #BDC1C8",
+    borderRight: "1 solid #BDC1C8",
+    textAlign: "center",
+
+    padding: "15px 15px ",
+  },
   price: {
     fontSize: "18px",
     fontWeight: "bold",
@@ -387,31 +403,34 @@ const styles = {
     margin: "0",
     padding: "0",
   },
+
   shortInfo: {
     display: "flex",
     justifyContent: "space-between",
     flexWrap: "wrap",
   },
+
   infoBox: {
     display: "flex",
     justifyContent: "space-between",
   },
+
   leftTitle: {
     color: "#8B96A5",
   },
+
   rightDesctiption: {
     marginLeft: "30px",
     color: "#505050",
   },
+
   line: {
     width: "100%",
     borderBottom: "1px solid #E0E0E0",
   },
-  profileCard: {
-    background: "white",
-    padding: "20px",
-    border: "1px solid #DEE2E7",
-    borderRadius: "6px",
+
+  rightSide: {
+    margin: "0px",
   },
   topCard: {
     display: "flex",
@@ -419,17 +438,26 @@ const styles = {
     gap: "11px",
     marginBottom: "20px",
   },
+
   pCard: {
     margin: "0",
     padding: "0",
     color: "#1C1C1C",
   },
+  profileCard: {
+    background: "white",
+    padding: "20px",
+    border: "1px solid #DEE2E7",
+    borderRadius: "6px",
+  },
+
   bottomCard: {
     display: "flex",
     gap: "8px",
     flexDirection: "column",
     marginTop: "28px",
   },
+
   firstButton: {
     background: "linear-gradient(180deg, #127FFF 0%, #0067FF 100%)",
     color: "white",
@@ -439,6 +467,7 @@ const styles = {
     outline: "none",
     cursor: "pointer",
   },
+
   secondButton: {
     background: "#FFFFFF",
     color: "#0D6EFD",
@@ -448,6 +477,7 @@ const styles = {
     outline: "none",
     cursor: "pointer",
   },
+
   save: {
     display: "flex",
     justifyContent: "center",
@@ -455,46 +485,34 @@ const styles = {
     gap: "8px",
     marginTop: "23px",
   },
-  pSave: {
-    margin: "0",
-    padding: "0",
-    color: "#0D6EFD",
-    fontWeight: "500",
-  },
+
   h1: {
     color: "#1C1C1C",
     fontSize: "20px",
   },
-  ulMenu: {
-    listStyle: "none",
-    margin: "0",
-    padding: "0",
-    display: "flex",
-    justifyContent: "space-between",
+
+  h2: {
+    margin: "0px",
   },
-  liMenuActive: {
-    color: "#0D6EFD",
-    padding: "16px 16px 13px 16px",
-    fontWeight: "500",
-    borderBottom: "2px solid #0D6EFD",
-  },
-  liMenu: {
-    display: "flex",
-    padding: "16px 16px 13px 16px",
-    color: "#8B96A5",
-    cursor: "pointer",
-  },
-  middleRightSide: {
-    width: "23%",
-    background: "white",
-    padding: "20px 22px 36px 16px",
-    borderRadius: "6px",
-    border: "1px solid #DEE2E7",
+
+  p: {
+    fontSize: "16px",
+    color: "#888",
+    margin: "0px",
+    padding: "0px",
+    fontWeight: "400",
   },
 
   pMiddle: {
     margin: "0",
     padding: "0",
+  },
+
+  pSave: {
+    margin: "0",
+    padding: "0",
+    color: "#0D6EFD",
+    fontWeight: "500",
   },
 
   ul: {
@@ -508,6 +526,50 @@ const styles = {
     gap: "18px",
     color: "#8B96A5",
     margin: "8px 0px",
+  },
+
+  menu: {
+    width: "65%",
+    height: "48px",
+    borderBottom: "1px solid #DEE2E7",
+  },
+
+  ulMenu: {
+    width: "65%",
+    listStyle: "none",
+    margin: "0",
+    padding: "0",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+
+  liMenu: {
+    display: "flex",
+    padding: "16px 16px 13px 16px",
+    color: "#8B96A5",
+    cursor: "pointer",
+  },
+
+  liMenuActive: {
+    color: "#0D6EFD",
+    padding: "16px 16px 13px 16px",
+    fontWeight: "500",
+    borderBottom: "2px solid #0D6EFD",
+  },
+
+  pMenu: {
+    margin: "0px",
+    color: "#1C1C1C",
+    fontWeight: "600",
+    marginBottom: "14px",
+  },
+
+  middleRightSide: {
+    width: "23%",
+    background: "white",
+    padding: "20px 22px 36px 16px",
+    borderRadius: "6px",
+    border: "1px solid #DEE2E7",
   },
 
   middleContainer: {
@@ -535,12 +597,7 @@ const styles = {
   },
 
   itemInfo: {},
-  productitle: {
-    color: "#505050",
-  },
-  productprice: {
-    color: "#8B96A5",
-  },
+
   blockRecommend: {
     height: "350px",
     padding: "20px 26px 0px 22px",
@@ -548,22 +605,24 @@ const styles = {
     border: "1px solid #DEE2E7",
     borderRadius: "6px",
   },
+
   cardsContainer: {
     display: "flex",
     justifyContent: "space-between",
   },
+
   cardBox: {
     width: "155px",
     height: "155px",
     cursor: "pointer",
   },
 
-  p: {
-    fontSize: "16px",
-    color: "#888",
-    margin: "0px",
-    padding: "0px",
-    fontWeight: "400",
+  productitle: {
+    color: "#505050",
+  },
+
+  productprice: {
+    color: "#8B96A5",
   },
 };
 
