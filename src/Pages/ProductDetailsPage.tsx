@@ -73,15 +73,22 @@ const ProductDetailsPage = () => {
     return <div>Loading...</div>;
   }
 
+  const discountedPrice = product.discountPercentage
+    ? (
+        product.price -
+        (product.price * product.discountPercentage) / 100
+      ).toFixed(2)
+    : null;
+
   return (
     <div style={styles.container}>
       <div style={styles.productDetailsContainer}>
         {/* Left Side */}
-        <div style={styles.leftSide}>
+        <div style={{ ...styles.leftSide, width: "40%" }}>
           <img
             src={product.images?.[0] || "fallback-image-url.jpg"}
             alt={product.title}
-            style={styles.productImage}
+            style={{ ...styles.productImage, width: "100%" }}
             onError={(e) => {
               e.target.src = "fallback-image-url.jpg";
             }}
@@ -127,7 +134,29 @@ const ProductDetailsPage = () => {
             <div style={styles.priceContainer}>
               <div style={styles.box}>
                 <h1 style={styles.price}>${product.price.toFixed(2)}</h1>
-                <p style={styles.p}>50-100 pcs</p>
+              </div>
+
+              <div style={styles.box}>
+                {discountedPrice && (
+                  <div style={styles.discountContainer}>
+                    <p
+                      style={{
+                        ...styles.p,
+                        textDecoration: "line-through",
+                        marginRight: "10px",
+                      }}
+                    >
+                      ${product.price.toFixed(2)}
+                    </p>
+            
+                  </div>
+                )}
+              </div>
+              <div style={styles.box}>
+
+                <p style={{ ...styles.p, color: "#FA3434" }}>
+                  ${discountedPrice}
+                </p>
               </div>
             </div>
           </div>
@@ -160,6 +189,7 @@ const ProductDetailsPage = () => {
             </div>
           </div>
         </div>
+
         {/* Right Side */}
         <div style={styles.rightSide}>
           <div style={styles.profileCard}>
@@ -264,7 +294,7 @@ const ProductDetailsPage = () => {
                 <img
                   src={relatedProduct.thumbnail}
                   alt={relatedProduct.title}
-                  style={styles.productImage}
+                  style={styles.productImageRelated}
                 />
                 <p style={styles.productitle}>{relatedProduct.title}</p>
                 <p style={styles.productprice}>
@@ -296,9 +326,7 @@ const styles = {
     padding: "20px 20px 20px 20px",
   },
   leftSide: {
-    flex: 1,
-    display: "flex",
-    maxWidth: "100%",
+    background: "#FFFFFF",
   },
   middleSide: {
     width: "41%",
@@ -314,6 +342,14 @@ const styles = {
     height: "auto",
     borderRadius: "6px",
     border: "1px solid #EEEEEE",
+    background: "#FFFFFF",
+  },
+
+  productImageRelated: {
+    width: "100%",
+    maxWidth: "400px",
+    height: "auto",
+    borderRadius: "6px",
     background: "#EEEEEE",
   },
   stock: {
@@ -564,6 +600,10 @@ const styles = {
     margin: "0px",
     padding: "0px",
     fontWeight: "400",
+  },
+
+  discountContainer: {
+    display: "flex",
   },
 };
 
