@@ -80,6 +80,12 @@ const ProductDetailsPage = () => {
       ).toFixed(2)
     : null;
 
+  const truncateDescription = (description: string) => {
+    return description.length > 30
+      ? description.substring(0, 30) + "..."
+      : description;
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.productDetailsContainer}>
@@ -133,9 +139,17 @@ const ProductDetailsPage = () => {
             </div>
             <div style={styles.priceContainer}>
               <div style={styles.box}>
-                <h1 style={styles.price}>${product.price.toFixed(2)}</h1>
+                <h1
+                  style={{
+                    ...styles.p,
+                    color: "#FA3434",
+                    fontWeight: "bold",
+                    fontSize: "20px",
+                  }}
+                >
+                  ${discountedPrice}
+                </h1>
               </div>
-
               <div style={styles.box}>
                 {discountedPrice && (
                   <div style={styles.discountContainer}>
@@ -151,11 +165,6 @@ const ProductDetailsPage = () => {
                   </div>
                 )}
               </div>
-              <div style={styles.box}>
-                <p style={{ ...styles.p, color: "#FA3434" }}>
-                  ${discountedPrice}
-                </p>
-              </div>
             </div>
           </div>
           <div style={styles.shortInfo}>
@@ -168,11 +177,15 @@ const ProductDetailsPage = () => {
                 <p>Warranty:</p>
               </div>
               <div style={styles.rightDesctiption}>
-                <p>Negotiable</p>
-                <p>Classic shoes</p>
-                <p>Plastic Material</p>
-                <p>Modern nice</p>
-                <p>2 years full warranty</p>
+                <p>{product.price ? `$${product.price.toFixed(2)}` : "N/A"}</p>
+                <p>{product.category || "N/A"}</p>
+                <p>{product.brand || "N/A"}</p>
+                <p>
+                  {truncateDescription(
+                    product.description || "No description available"
+                  )}
+                </p>
+                <p>{product.warranty || "N/A"}</p>
               </div>
             </div>
           </div>
