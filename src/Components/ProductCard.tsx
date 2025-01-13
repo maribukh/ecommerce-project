@@ -324,7 +324,7 @@ const ProductsCard = () => {
 
 const styles = {
   productCardContainer: {
-    padding: "20px",
+    padding: "0px 20px 20px 20px",
   },
   contentTop: {
     width: "100%",

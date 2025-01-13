@@ -6,11 +6,13 @@ const Sidebar = ({
   activeFilters,
   onFilterChange,
   onAvailableFiltersUpdate,
-}) => {
-  const [categories, setCategories] = useState<string[]>([]); 
-  const [brands, setBrands] = useState<string[]>([]); 
+}: any) => {
+  const [categories, setCategories] = useState<string[]>([]);
+  const [brands, setBrands] = useState<string[]>([]);
   const [expandedCategories, setExpandedCategories] = useState(false);
-  const [expandedBrands, setExpandedBrands] = useState(false); 
+  const [expandedBrands, setExpandedBrands] = useState(false);
+  const [showAllCategories, setShowAllCategories] = useState(false);
+  const [showAllBrands, setShowAllBrands] = useState(false);
 
   useEffect(() => {
     // Fetch products to get categories and brands
@@ -20,9 +22,8 @@ const Sidebar = ({
         return response.json();
       })
       .then((data) => {
-        console.log("Products data:", data); 
+        console.log("Products data:", data);
         if (!data.products) throw new Error("Invalid API response structure");
-
 
         const uniqueCategories = Array.from(
           new Set(
@@ -30,15 +31,14 @@ const Sidebar = ({
               (product: { category: string }) => product.category
             )
           )
-        ).slice(0, 5);
+        );
         setCategories(uniqueCategories);
-
 
         const uniqueBrands = Array.from(
           new Set(
             data.products.map((product: { brand: string }) => product.brand)
           )
-        ).slice(0, 5);
+        );
         setBrands(uniqueBrands);
 
         onAvailableFiltersUpdate([...uniqueBrands, "4 star", "3 star"]);
@@ -48,7 +48,7 @@ const Sidebar = ({
 
   const toggleSelection = (filter: string) => {
     const newFilters = activeFilters.includes(filter)
-      ? activeFilters.filter((f) => f !== filter)
+      ? activeFilters.filter((f: string) => f !== filter)
       : [...activeFilters, filter];
     onFilterChange(newFilters);
   };
@@ -59,6 +59,16 @@ const Sidebar = ({
 
   const toggleBrandVisibility = () => {
     setExpandedBrands(!expandedBrands);
+  };
+
+  const handleShowAllCategories = (event: React.MouseEvent) => {
+    event.preventDefault(); 
+    setShowAllCategories((prev) => !prev); 
+  };
+
+  const handleShowAllBrands = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setShowAllBrands((prev) => !prev); 
   };
 
   return (
@@ -74,24 +84,26 @@ const Sidebar = ({
         </div>
         {expandedCategories && categories.length > 0 && (
           <ul style={styles.ul}>
-            {categories.map((category, index) => (
-              <li style={styles.li} key={index}>
-                <button
-                  onClick={() => toggleSelection(category)}
-                  style={{
-                    ...styles.button,
-                    backgroundColor: activeFilters.includes(category)
-                      ? "#E5F1FF"
-                      : "transparent", 
-                  }}
-                >
-                  {category}
-                </button>
-              </li>
-            ))}
+            {categories
+              .slice(0, showAllCategories ? categories.length : 5)
+              .map((category, index) => (
+                <li style={styles.li} key={index}>
+                  <button
+                    onClick={() => toggleSelection(category)}
+                    style={{
+                      ...styles.button,
+                      backgroundColor: activeFilters.includes(category)
+                        ? "#E5F1FF"
+                        : "transparent",
+                    }}
+                  >
+                    {category}
+                  </button>
+                </li>
+              ))}
             <li style={styles.li}>
-              <a href="#" style={styles.link}>
-                See all
+              <a href="#" onClick={handleShowAllCategories} style={styles.link}>
+                {showAllCategories ? "See less" : "See all"}
               </a>
             </li>
           </ul>
@@ -100,7 +112,6 @@ const Sidebar = ({
           <p style={styles.noData}>No categories available</p>
         )}
       </div>
-
 
       <div style={styles.section}>
         <div style={styles.box} onClick={toggleBrandVisibility}>
@@ -113,22 +124,24 @@ const Sidebar = ({
         </div>
         {expandedBrands && brands.length > 0 && (
           <ul style={styles.ul}>
-            {brands.map((brand, index) => (
-              <li style={styles.li} key={index}>
-                <input
-                  type="checkbox"
-                  id={brand}
-                  checked={activeFilters.includes(brand)}
-                  onChange={() => toggleSelection(brand)}
-                />
-                <label htmlFor={brand} style={styles.label}>
-                  {brand}
-                </label>
-              </li>
-            ))}
+            {brands
+              .slice(0, showAllBrands ? brands.length : 5)
+              .map((brand, index) => (
+                <li style={styles.li} key={index}>
+                  <input
+                    type="checkbox"
+                    id={brand}
+                    checked={activeFilters.includes(brand)}
+                    onChange={() => toggleSelection(brand)}
+                  />
+                  <label htmlFor={brand} style={styles.label}>
+                    {brand}
+                  </label>
+                </li>
+              ))}
             <li style={styles.li}>
-              <a href="#" style={styles.link}>
-                See all
+              <a href="#" onClick={handleShowAllBrands} style={styles.link}>
+                {showAllBrands ? "See less" : "See all"}
               </a>
             </li>
           </ul>
@@ -189,7 +202,7 @@ const styles = {
   label: {
     marginLeft: "8px",
     color: "#333",
-    fontSize: "14px", 
+    fontSize: "14px",
   },
   link: {
     color: "#007BFF",
