@@ -206,15 +206,23 @@ const ProductDetailsPage = () => {
             <div style={styles.middleCard}>
               <ul style={styles.ul}>
                 <li style={styles.li}>
-                  <img src={germany} alt="Germany Flag" />
+                  <img src={germany} alt="Germany Flag" style={styles.liImg} />
                   <p style={styles.pMiddle}>Germany, Berlin</p>
                 </li>
                 <li style={styles.li}>
-                  <img src={verify} alt="Verified Seller" />
+                  <img
+                    src={verify}
+                    alt="Verified Seller"
+                    style={styles.liImg}
+                  />
                   <p style={styles.pMiddle}>Verified Seller</p>
                 </li>
                 <li style={styles.li}>
-                  <img src={worldwide} alt="Worldwide Shipping" />
+                  <img
+                    src={worldwide}
+                    alt="Worldwide Shipping"
+                    style={styles.liImg}
+                  />
                   <p style={styles.pMiddle}>Worldwide shipping</p>
                 </li>
               </ul>
@@ -348,7 +356,6 @@ const styles = {
   },
   rightSide: {
     width: "30%",
-
   },
   productImage: {
     width: "100%",
@@ -547,6 +554,12 @@ const styles = {
     padding: "0",
   },
 
+  liImg: {
+    width: "20px",
+    height: "20px",
+    marginRight: "18px",
+  },
+
   ul: {
     listStyle: "none",
     margin: "0",
@@ -555,7 +568,6 @@ const styles = {
 
   li: {
     display: "flex",
-    gap: "18px",
     color: "#8B96A5",
     margin: "8px 0px",
   },

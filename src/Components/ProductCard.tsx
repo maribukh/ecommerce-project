@@ -24,6 +24,7 @@ const ProductsCard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(""); // New state for search query
 
   const productsPerPage = 9;
   const navigate = useNavigate();
@@ -38,12 +39,13 @@ const ProductsCard = () => {
     }
   }, [location]);
 
+  // Function to fetch products based on searchQuery and other filters
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://dummyjson.com/products?limit=${productsPerPage}&skip=${
+          `https://dummyjson.com/products/search?q=${searchQuery}&limit=${productsPerPage}&skip=${
             (currentPage - 1) * productsPerPage
           }`
         );
@@ -58,7 +60,7 @@ const ProductsCard = () => {
     };
 
     fetchProducts();
-  }, [currentPage]);
+  }, [currentPage, searchQuery]); // Fetch products whenever searchQuery or currentPage changes
 
   const handleSortChange = (e) => {
     const selectedSortOption = e.target.value;
@@ -209,8 +211,17 @@ const ProductsCard = () => {
       </div>
       <div style={styles.searchContainer}>
         <div style={styles.search}>
-          <input type="search" style={styles.input} />
-          <button type="submit" style={styles.buttonSubmit}>
+          <input
+            type="search"
+            style={styles.input}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
+          />
+          <button
+            type="submit"
+            style={styles.buttonSubmit}
+            onClick={() => setCurrentPage(1)}
+          >
             Search
           </button>
         </div>
