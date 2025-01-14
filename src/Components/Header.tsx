@@ -101,7 +101,6 @@ const styles = {
     padding: "12px 10px",
     backgroundColor: "#007bff",
     color: "#fff",
-    border: "none",
     cursor: "pointer",
     fontSize: "1rem",
     border: "1px solid #0D6EFD",
