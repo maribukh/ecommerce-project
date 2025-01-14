@@ -10,9 +10,19 @@ import RightVector from "./assets/images/icons/rightVector.svg";
 import ProductDetailsPage from "./Pages/ProductDetailsPage";
 import DE from "../src/assets/images/icons/DE.svg";
 
+// Type definitions
+type Product = {
+  id: number;
+  title: string;
+  price: number;
+  rating: number;
+  brand: string;
+  thumbnail: string;
+};
+
 function App() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [cartItems, setCartItems] = useState<Product[]>([]);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [availableFilters, setAvailableFilters] = useState<string[]>([]);
 
@@ -20,7 +30,7 @@ function App() {
     setSearchQuery(query);
   };
 
-  const handleAddToCart = (item: any) => {
+  const handleAddToCart = (item: Product) => {
     setCartItems((prev) => [...prev, item]);
   };
 
@@ -210,7 +220,7 @@ const styles = {
   liLang: {
     display: "flex",
     alignItems: "center",
-    marginRight: "10px",
+    marginLeft: "10px",
   },
 
   ulNav: {
