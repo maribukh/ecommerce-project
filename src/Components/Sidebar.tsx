@@ -8,11 +8,7 @@ interface SidebarProps {
   onAvailableFiltersUpdate: (filters: string[]) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
-  activeFilters,
-  onFilterChange,
-  onAvailableFiltersUpdate,
-}) => {
+const Sidebar: React.FC<SidebarProps> = ({ activeFilters, onFilterChange, onAvailableFiltersUpdate }) => {
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
   const [expandedCategories, setExpandedCategories] = useState(false);
@@ -29,20 +25,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       .then((data) => {
         if (!data.products) throw new Error("Invalid API response structure");
 
-        const uniqueCategories = Array.from(
-          new Set(
-            data.products.map(
-              (product: { category: string }) => product.category
-            )
-          )
-        );
+        const uniqueCategories = Array.from(new Set(data.products.map((product: { category: string }) => product.category)));
         setCategories(uniqueCategories);
 
-        const uniqueBrands = Array.from(
-          new Set(
-            data.products.map((product: { brand: string }) => product.brand)
-          )
-        );
+        const uniqueBrands = Array.from(new Set(data.products.map((product: { brand: string }) => product.brand)));
         setBrands(uniqueBrands);
 
         onAvailableFiltersUpdate([...uniqueBrands, "4 star", "3 star"]);
@@ -88,23 +74,19 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
         {expandedCategories && categories.length > 0 && (
           <ul style={styles.ul}>
-            {categories
-              .slice(0, showAllCategories ? categories.length : 5)
-              .map((category) => (
-                <li style={styles.li} key={category}>
-                  <button
-                    onClick={() => toggleSelection(category)}
-                    style={{
-                      ...styles.button,
-                      backgroundColor: activeFilters.includes(category)
-                        ? "#E5F1FF"
-                        : "transparent",
-                    }}
-                  >
-                    {category}
-                  </button>
-                </li>
-              ))}
+            {categories.slice(0, showAllCategories ? categories.length : 5).map((category, index) => (
+              <li style={styles.li} key={index}>
+                <button
+                  onClick={() => toggleSelection(category)}
+                  style={{
+                    ...styles.button,
+                    backgroundColor: activeFilters.includes(category) ? "#E5F1FF" : "transparent",
+                  }}
+                >
+                  {category}
+                </button>
+              </li>
+            ))}
             <li style={styles.li}>
               <a href="#" onClick={handleShowAllCategories} style={styles.link}>
                 {showAllCategories ? "See less" : "See all"}
@@ -112,9 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             </li>
           </ul>
         )}
-        {categories.length === 0 && (
-          <p style={styles.noData}>No categories available</p>
-        )}
+        {categories.length === 0 && <p style={styles.noData}>No categories available</p>}
       </div>
 
       <div style={styles.section}>
@@ -128,8 +108,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
         {expandedBrands && brands.length > 0 && (
           <ul style={styles.ul}>
-            {brands.slice(0, showAllBrands ? brands.length : 5).map((brand) => (
-              <li style={styles.li} key={brand}>
+            {brands.slice(0, showAllBrands ? brands.length : 5).map((brand, index) => (
+              <li style={styles.li} key={index}>
                 <input
                   type="checkbox"
                   id={brand}
@@ -148,9 +128,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             </li>
           </ul>
         )}
-        {brands.length === 0 && (
-          <p style={styles.noData}>No brands available</p>
-        )}
+        {brands.length === 0 && <p style={styles.noData}>No brands available</p>}
       </div>
     </aside>
   );

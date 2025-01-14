@@ -12,7 +12,8 @@ const Header = ({ onSearch, cartCount }) => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    onSearch(searchQuery);
+    onSearch(searchQuery); 
+    navigate("/search-results"); 
   };
 
   return (

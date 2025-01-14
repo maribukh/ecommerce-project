@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"; // Import Link
 import Header from "./Components/Header";
 import Sidebar from "./Components/Sidebar";
 import ProductsCard from "./Components/ProductCard";
@@ -87,7 +87,10 @@ function App() {
           <div style={styles.navContainer}>
             <ul style={styles.ulNav}>
               <li style={styles.li}>
-                <p style={styles.pSpacing}>Home</p>
+                {/* Link component for Home */}
+                <Link to="/" style={styles.link}>
+                  <p style={styles.pSpacing}>Home</p>
+                </Link>
                 <img src={RightVector} alt="right" />
               </li>
               <li style={styles.li}>
@@ -189,7 +192,6 @@ const styles = {
   },
   leftSide: {
     width: "100%",
-    paddingLeft: "10px",
     paddingRight: "132px",
   },
 
@@ -220,7 +222,7 @@ const styles = {
   liLang: {
     display: "flex",
     alignItems: "center",
-    marginLeft: "10px",
+    marginRight: "10px",
   },
 
   ulNav: {
@@ -230,6 +232,11 @@ const styles = {
     padding: "0",
     listStyle: "none",
     margin: "0",
+  },
+
+  link: {
+    textDecoration: "none", 
+    color: "inherit", 
   },
 };
 

@@ -347,8 +347,8 @@ const styles = {
     padding: "0px 25px",
   },
   rightSide: {
-    width: "25%",
-    padding: "0px 15px",
+    width: "30%",
+
   },
   productImage: {
     width: "100%",

@@ -476,14 +476,12 @@ const styles = {
     justifyContent: "flex-end",
     alignItems: "center",
     marginTop: "20px",
-    gap: "5px",
   },
   ulPage: {
     display: "flex",
     listStyle: "none",
     padding: "0",
     margin: "0",
-    gap: "5px",
   },
   liPage: {
     display: "flex",
