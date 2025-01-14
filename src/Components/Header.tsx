@@ -5,6 +5,7 @@ import ProfileIcon from "../assets/images/icons/profile.svg";
 import MessageIcon from "../assets/images/icons/message.svg";
 import OrderIcon from "../assets/images/icons/fav.svg";
 import CartIcon from "../assets/images/icons/cart.svg";
+import styled from "styled-components";
 
 const Header = ({ onSearch, cartCount }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -12,8 +13,8 @@ const Header = ({ onSearch, cartCount }) => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    onSearch(searchQuery); 
-    navigate("/search-results"); 
+    onSearch(searchQuery);
+    navigate("/search-results");
   };
 
   return (
@@ -134,6 +135,15 @@ const styles = {
   p: {
     margin: 0,
     fontSize: "0.9rem",
+  },
+
+  "@media (max-width: 1024px)": {
+    header: {
+      display: "none",
+    },
+    search: {
+      display: "none",
+    },
   },
 };
 

@@ -29,7 +29,7 @@ const ProductsCard = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-// URL
+  // URL
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const sort = urlParams.get("sort");
@@ -207,6 +207,14 @@ const ProductsCard = () => {
           </div>
         </ul>
       </div>
+      <div style={styles.searchContainer}>
+        <div style={styles.search}>
+          <input type="search" style={styles.input} />
+          <button type="submit" style={styles.buttonSubmit}>
+            Search
+          </button>
+        </div>
+      </div>
 
       <div style={styles.filters}>
         <ul style={styles.ul}>
@@ -310,7 +318,7 @@ const ProductsCard = () => {
             <li key={pageNumber} style={styles.liPage}>
               <button
                 style={{
-                  ...styles.paginationButton,
+                  ...styles.paginationButtonNumber,
                   ...(currentPage === pageNumber && styles.activePageButton),
                 }}
                 onClick={() => setCurrentPage(pageNumber)}
@@ -502,6 +510,22 @@ const styles = {
     alignItems: "center",
     textAlign: "center",
   },
+
+  paginationButtonNumber: {
+    border: "1px solid #E0E0E0",
+    padding: "6px 12px",
+    backgroundColor: "#FFFFFF",
+    color: "#505050",
+    fontSize: "14px",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    width: "40px",
+    height: "40px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
   activePageButton: {
     border: "1px solid #0D6EFD",
     backgroundColor: "#E9F2FF",
@@ -523,6 +547,34 @@ const styles = {
   },
   title: {
     color: "#606060",
+  },
+
+  input: {
+    width: "100%",
+    outline: "none",
+    border: "1px solid #E0E0E0",
+    borderRadius: "6px 0px 0px 6px",
+  },
+
+  searchContainer: {
+    margin: "10px 0px",
+  },
+
+  search: {
+    width: "100%",
+    display: "flex",
+  },
+
+  buttonSubmit: {
+    width: "10%",
+    padding: "8px 0px",
+    backgroundColor: "#007bff",
+    color: "#fff",
+    cursor: "pointer",
+    fontSize: "0.9rem",
+    border: "1px solid #0D6EFD",
+    borderRadius: "0px 6px 6px 0px",
+    outline: "none",
   },
 };
 

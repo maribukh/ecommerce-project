@@ -343,7 +343,7 @@ const styles = {
     background: "#FFFFFF",
   },
   middleSide: {
-    width: "41%",
+    width: "42%",
     padding: "0px 25px",
   },
   rightSide: {

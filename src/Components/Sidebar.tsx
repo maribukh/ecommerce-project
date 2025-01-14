@@ -8,7 +8,11 @@ interface SidebarProps {
   onAvailableFiltersUpdate: (filters: string[]) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeFilters, onFilterChange, onAvailableFiltersUpdate }) => {
+const Sidebar: React.FC<SidebarProps> = ({
+  activeFilters,
+  onFilterChange,
+  onAvailableFiltersUpdate,
+}) => {
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
   const [expandedCategories, setExpandedCategories] = useState(false);
@@ -25,10 +29,20 @@ const Sidebar: React.FC<SidebarProps> = ({ activeFilters, onFilterChange, onAvai
       .then((data) => {
         if (!data.products) throw new Error("Invalid API response structure");
 
-        const uniqueCategories = Array.from(new Set(data.products.map((product: { category: string }) => product.category)));
+        const uniqueCategories = Array.from(
+          new Set(
+            data.products.map(
+              (product: { category: string }) => product.category
+            )
+          )
+        );
         setCategories(uniqueCategories);
 
-        const uniqueBrands = Array.from(new Set(data.products.map((product: { brand: string }) => product.brand)));
+        const uniqueBrands = Array.from(
+          new Set(
+            data.products.map((product: { brand: string }) => product.brand)
+          )
+        );
         setBrands(uniqueBrands);
 
         onAvailableFiltersUpdate([...uniqueBrands, "4 star", "3 star"]);
@@ -74,19 +88,23 @@ const Sidebar: React.FC<SidebarProps> = ({ activeFilters, onFilterChange, onAvai
         </div>
         {expandedCategories && categories.length > 0 && (
           <ul style={styles.ul}>
-            {categories.slice(0, showAllCategories ? categories.length : 5).map((category, index) => (
-              <li style={styles.li} key={index}>
-                <button
-                  onClick={() => toggleSelection(category)}
-                  style={{
-                    ...styles.button,
-                    backgroundColor: activeFilters.includes(category) ? "#E5F1FF" : "transparent",
-                  }}
-                >
-                  {category}
-                </button>
-              </li>
-            ))}
+            {categories
+              .slice(0, showAllCategories ? categories.length : 5)
+              .map((category, index) => (
+                <li style={styles.li} key={index}>
+                  <button
+                    onClick={() => toggleSelection(category)}
+                    style={{
+                      ...styles.button,
+                      backgroundColor: activeFilters.includes(category)
+                        ? "#E5F1FF"
+                        : "transparent",
+                    }}
+                  >
+                    {category}
+                  </button>
+                </li>
+              ))}
             <li style={styles.li}>
               <a href="#" onClick={handleShowAllCategories} style={styles.link}>
                 {showAllCategories ? "See less" : "See all"}
@@ -94,9 +112,10 @@ const Sidebar: React.FC<SidebarProps> = ({ activeFilters, onFilterChange, onAvai
             </li>
           </ul>
         )}
-        {categories.length === 0 && <p style={styles.noData}>No categories available</p>}
+        {categories.length === 0 && (
+          <p style={styles.noData}>No categories available</p>
+        )}
       </div>
-
       <div style={styles.section}>
         <div style={styles.box} onClick={toggleBrandVisibility}>
           <h2 style={styles.h2}>Brands</h2>
@@ -106,21 +125,24 @@ const Sidebar: React.FC<SidebarProps> = ({ activeFilters, onFilterChange, onAvai
             style={styles.toggleIcon}
           />
         </div>
+
         {expandedBrands && brands.length > 0 && (
           <ul style={styles.ul}>
-            {brands.slice(0, showAllBrands ? brands.length : 5).map((brand, index) => (
-              <li style={styles.li} key={index}>
-                <input
-                  type="checkbox"
-                  id={brand}
-                  checked={activeFilters.includes(brand)}
-                  onChange={() => toggleSelection(brand)}
-                />
-                <label htmlFor={brand} style={styles.label}>
-                  {brand}
-                </label>
-              </li>
-            ))}
+            {brands
+              .slice(0, showAllBrands ? brands.length : 5)
+              .map((brand, index) => (
+                <li style={styles.li} key={index}>
+                  <input
+                    type="checkbox"
+                    id={brand}
+                    checked={activeFilters.includes(brand)}
+                    onChange={() => toggleSelection(brand)}
+                  />
+                  <label htmlFor={brand} style={styles.label}>
+                    {brand}
+                  </label>
+                </li>
+              ))}
             <li style={styles.li}>
               <a href="#" onClick={handleShowAllBrands} style={styles.link}>
                 {showAllBrands ? "See less" : "See all"}
@@ -128,7 +150,59 @@ const Sidebar: React.FC<SidebarProps> = ({ activeFilters, onFilterChange, onAvai
             </li>
           </ul>
         )}
-        {brands.length === 0 && <p style={styles.noData}>No brands available</p>}
+        {brands.length === 0 && (
+          <p style={styles.noData}>No brands available</p>
+        )}
+      </div>
+      <div style={styles.section}>
+        <div style={styles.box} onClick={toggleBrandVisibility}>
+          <h2 style={styles.h2}>Features</h2>
+          <img
+            src={expandedBrands ? DropUp : DropDown}
+            alt="Toggle visibility"
+            style={styles.toggleIcon}
+          />
+        </div>
+      </div>
+      <div style={styles.section}>
+        <div style={styles.box} onClick={toggleBrandVisibility}>
+          <h2 style={styles.h2}>Price Range</h2>
+          <img
+            src={expandedBrands ? DropUp : DropDown}
+            alt="Toggle visibility"
+            style={styles.toggleIcon}
+          />
+        </div>
+      </div>
+      <div style={styles.section}>
+        <div style={styles.box} onClick={toggleBrandVisibility}>
+          <h2 style={styles.h2}>Condition</h2>
+          <img
+            src={expandedBrands ? DropUp : DropDown}
+            alt="Toggle visibility"
+            style={styles.toggleIcon}
+          />
+        </div>
+      </div>
+      <div style={styles.section}>
+        <div style={styles.box} onClick={toggleBrandVisibility}>
+          <h2 style={styles.h2}>Rating</h2>
+          <img
+            src={expandedBrands ? DropUp : DropDown}
+            alt="Toggle visibility"
+            style={styles.toggleIcon}
+          />
+        </div>
+      </div>
+      <div style={styles.section}>
+        <div style={styles.box} onClick={toggleBrandVisibility}>
+          <h2 style={styles.h2}>Manufacturer</h2>
+          <img
+            src={expandedBrands ? DropUp : DropDown}
+            alt="Toggle visibility"
+            style={styles.toggleIcon}
+          />
+        </div>
       </div>
     </aside>
   );
