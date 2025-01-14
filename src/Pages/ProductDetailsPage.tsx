@@ -15,6 +15,7 @@ import item2 from "../assets/images/items/2.svg";
 import item3 from "../assets/images/items/3.svg";
 import item4 from "../assets/images/items/4.svg";
 import item5 from "../assets/images/items/5.svg";
+import blockImage from "../assets/images/design/block.svg";
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -308,6 +309,18 @@ const ProductDetailsPage = () => {
           )}
         </div>
       </div>
+      <div style={styles.banner}>
+        <img src={blockImage} alt="" style={styles.bannerBlock} />
+        <div style={styles.leftContent}>
+          <h1 style={styles.h1Banner}>Super discount on more than 100 USD</h1>
+          <p style={styles.pBanner}>
+            Have you ever finally just write dummy info
+          </p>
+        </div>
+        <div style={styles.rightContent}>
+          <button style={styles.button}>Shop Now</button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -579,7 +592,7 @@ const styles = {
     color: "#8B96A5",
   },
   blockRecommend: {
-    height: "350px",
+    height: "340px",
     padding: "20px 26px 0px 22px",
     backgroundColor: "#FFFFFF",
     border: "1px solid #DEE2E7",
@@ -606,6 +619,48 @@ const styles = {
   discountContainer: {
     display: "flex",
   },
+
+  banner: {
+    display: "flex",
+    justifyContent: "space-between",
+
+    alignItems: "center",
+    color: "#FFFFFF",
+    marginTop: "16px",
+  },
+
+  bannerBlock: {
+    position: "absolute",
+    width: "80.5%",
+  },
+
+  leftContent: {
+    position: "relative",
+    padding: "38px 30px 30px 30px",
+  },
+
+  rightContent: {
+    position: "relative",
+    marginRight: "45px",
+  },
+
+  button: {
+    background: "#FF9017",
+    color: "#FFFFFF",
+    padding: "10px 16px",
+    borderRadius: "6px",
+    outline: "none",
+    border: "none",
+    cursor: "pointer",
+  },
+
+  h1Banner: {
+    margin: "0",
+    fontSize: "24px",
+    fontWeight: "600",
+  },
+
+  pBanner: { margin: "0", marginTop: "10px" },
 };
 
 export default ProductDetailsPage;

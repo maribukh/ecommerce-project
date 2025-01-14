@@ -2,11 +2,17 @@ import React, { useState, useEffect } from "react";
 import DropUp from "../assets/images/icons/DropUp.svg";
 import DropDown from "../assets/images/icons/DropDown.svg";
 
-const Sidebar = ({
+interface SidebarProps {
+  activeFilters: string[];
+  onFilterChange: (filters: string[]) => void;
+  onAvailableFiltersUpdate: (filters: string[]) => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({
   activeFilters,
   onFilterChange,
   onAvailableFiltersUpdate,
-}: any) => {
+}) => {
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
   const [expandedCategories, setExpandedCategories] = useState(false);
@@ -15,14 +21,12 @@ const Sidebar = ({
   const [showAllBrands, setShowAllBrands] = useState(false);
 
   useEffect(() => {
-    // Fetch products to get categories and brands
     fetch("https://dummyjson.com/products")
       .then((response) => {
         if (!response.ok) throw new Error("Network response was not ok");
         return response.json();
       })
       .then((data) => {
-        console.log("Products data:", data);
         if (!data.products) throw new Error("Invalid API response structure");
 
         const uniqueCategories = Array.from(
@@ -48,7 +52,7 @@ const Sidebar = ({
 
   const toggleSelection = (filter: string) => {
     const newFilters = activeFilters.includes(filter)
-      ? activeFilters.filter((f: string) => f !== filter)
+      ? activeFilters.filter((f) => f !== filter)
       : [...activeFilters, filter];
     onFilterChange(newFilters);
   };
@@ -62,13 +66,13 @@ const Sidebar = ({
   };
 
   const handleShowAllCategories = (event: React.MouseEvent) => {
-    event.preventDefault(); 
-    setShowAllCategories((prev) => !prev); 
+    event.preventDefault();
+    setShowAllCategories((prev) => !prev);
   };
 
   const handleShowAllBrands = (event: React.MouseEvent) => {
     event.preventDefault();
-    setShowAllBrands((prev) => !prev); 
+    setShowAllBrands((prev) => !prev);
   };
 
   return (
@@ -86,8 +90,8 @@ const Sidebar = ({
           <ul style={styles.ul}>
             {categories
               .slice(0, showAllCategories ? categories.length : 5)
-              .map((category, index) => (
-                <li style={styles.li} key={index}>
+              .map((category) => (
+                <li style={styles.li} key={category}>
                   <button
                     onClick={() => toggleSelection(category)}
                     style={{
@@ -124,21 +128,19 @@ const Sidebar = ({
         </div>
         {expandedBrands && brands.length > 0 && (
           <ul style={styles.ul}>
-            {brands
-              .slice(0, showAllBrands ? brands.length : 5)
-              .map((brand, index) => (
-                <li style={styles.li} key={index}>
-                  <input
-                    type="checkbox"
-                    id={brand}
-                    checked={activeFilters.includes(brand)}
-                    onChange={() => toggleSelection(brand)}
-                  />
-                  <label htmlFor={brand} style={styles.label}>
-                    {brand}
-                  </label>
-                </li>
-              ))}
+            {brands.slice(0, showAllBrands ? brands.length : 5).map((brand) => (
+              <li style={styles.li} key={brand}>
+                <input
+                  type="checkbox"
+                  id={brand}
+                  checked={activeFilters.includes(brand)}
+                  onChange={() => toggleSelection(brand)}
+                />
+                <label htmlFor={brand} style={styles.label}>
+                  {brand}
+                </label>
+              </li>
+            ))}
             <li style={styles.li}>
               <a href="#" onClick={handleShowAllBrands} style={styles.link}>
                 {showAllBrands ? "See less" : "See all"}
@@ -158,7 +160,7 @@ const styles = {
   sidebar: {
     width: "240px",
     paddingLeft: "132px",
-    overflowY: "auto" as const,
+    overflowY: "auto",
   },
   section: {
     marginBottom: "20px",

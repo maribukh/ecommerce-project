@@ -29,7 +29,7 @@ const ProductsCard = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-// URL 
+// URL
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const sort = urlParams.get("sort");
