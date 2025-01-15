@@ -82,14 +82,15 @@ const styles = {
   },
   input: {
     width: "75%",
-    padding: "10px 10px",
+    padding: "11px 10px",
     fontSize: "1rem",
     border: "none",
     outline: "none",
+    borderRight: "2px solid #0D6EFD",
   },
   select: {
     fontSize: "1rem",
-    padding: "11px 10px",
+    padding: "10px 10px",
     borderRadius: "0",
     outline: "none",
     border: "none",
@@ -98,7 +99,7 @@ const styles = {
   },
   button: {
     width: "23%",
-    padding: "12px 10px",
+    padding: "10px 10px",
     backgroundColor: "#007bff",
     color: "#fff",
     cursor: "pointer",
