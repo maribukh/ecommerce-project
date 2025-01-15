@@ -5,7 +5,6 @@ import ProfileIcon from "../assets/images/icons/profile.svg";
 import MessageIcon from "../assets/images/icons/message.svg";
 import OrderIcon from "../assets/images/icons/fav.svg";
 import CartIcon from "../assets/images/icons/cart.svg";
-import styled from "styled-components";
 
 const Header = ({ onSearch, cartCount }) => {
   const [searchQuery, setSearchQuery] = useState("");
