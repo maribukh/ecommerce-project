@@ -563,6 +563,7 @@ const styles = {
   input: {
     width: "100%",
     outline: "none",
+    padding: "5px",
     border: "1px solid #E0E0E0",
     borderRadius: "6px 0px 0px 6px",
   },
