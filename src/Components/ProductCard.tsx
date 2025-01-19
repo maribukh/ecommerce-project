@@ -331,7 +331,7 @@ const ProductsCard = () => {
                 style={{
                   ...styles.paginationButtonNumber,
                   ...(currentPage === pageNumber && styles.activePageButton),
-                }}
+                }} 
                 onClick={() => setCurrentPage(pageNumber)}
               >
                 {pageNumber}
